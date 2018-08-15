@@ -17,28 +17,33 @@ namespace SteamHttp.Client
 
         public SteamHttpResponse<TResult> Get<TResult>(string url)
         {
-            return QueryUrl<TResult>(url, HttpMethods.GetMethod);
+            return QueryUrl<TResult>(url, HttpMethods.Get);
         }
 
         public SteamHttpResponse<TResult> Post<TPostBody, TResult>(string url, TPostBody obj)
         {
-            return QueryUrl<TResult>(url, HttpMethods.PostMethod, _configuration.SerializeObject(obj));
+            return QueryUrl<TResult>(url, HttpMethods.Post, _configuration.SerializeObject(obj));
         }
 
         public SteamHttpResponse Post<TPostBody>(string url, TPostBody obj)
         {
-            return QueryUrl(url, HttpMethods.PostMethod, _configuration.SerializeObject(obj));
+            return QueryUrl(url, HttpMethods.Post, _configuration.SerializeObject(obj));
+        }
+
+        public SteamHttpResponse Head(string url)
+        {
+            return QueryUrl(url, HttpMethods.Head);
         }
 
         private SteamHttpResponse<T> QueryUrl<T>(string url, string method, string body = null)
         {
             try
             {
-                var (httpResponse, content) = InnerQueryUrl(url,  method, body);
-                return SteamHttpResponse<T>.CreateSuccessResponseWithValue(httpResponse.StatusCode,
+                var (httpResponse, content) = InnerQueryUrl(url, method, body);
+                return SteamHttpResponse<T>.CreateSuccessResponseWithValue(httpResponse,
                                                                     _configuration.DeserializeObject<T>(content));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return SteamHttpResponse<T>.CreateFaultedResponseWithValue(e);
             }
@@ -48,10 +53,10 @@ namespace SteamHttp.Client
         {
             try
             {
-                var (httpResponse, _) = InnerQueryUrl(url,  method, body);
-                return SteamHttpResponse.CreateSuccessResponse(httpResponse.StatusCode);
+                var (httpResponse, _) = InnerQueryUrl(url, method, body);
+                return SteamHttpResponse.CreateSuccessResponse(httpResponse);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return SteamHttpResponse.CreateFaultedResponse(e);
             }

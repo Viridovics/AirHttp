@@ -6,7 +6,7 @@ namespace SteamHttp.Responses
     public class SteamHttpResponse
     {
         protected SteamHttpResponse()
-        {}
+        { }
 
         internal static SteamHttpResponse CreateFaultedResponse(Exception e)
         {
@@ -17,17 +17,42 @@ namespace SteamHttp.Responses
             };
         }
 
-        internal static SteamHttpResponse CreateSuccessResponse(HttpStatusCode statusCode)
+        internal static SteamHttpResponse CreateSuccessResponse(HttpWebResponse httpWebResponse)
         {
             return new SteamHttpResponse
             {
                 RequestFaulted = false,
-                StatusCode = statusCode,
+                ServerResponse = httpWebResponse
             };
         }
 
-        public HttpStatusCode StatusCode{ get; protected set; }
-        public bool RequestFaulted{ get; protected set; }
-        public Exception InnerException{ get; protected set; }
+        public HttpStatusCode StatusCode
+        {
+            get
+            {
+                return ServerResponse.StatusCode;
+            }
+        }
+
+        public long ContentLength
+        {
+            get
+            {
+                return ServerResponse.ContentLength;
+            }
+        }
+
+        public DateTime LastModified
+        {
+            get
+            {
+                return ServerResponse.LastModified;
+            }
+        }
+
+        public bool RequestFaulted { get; protected set; }
+        public Exception InnerException { get; protected set; }
+
+        protected HttpWebResponse ServerResponse { get; set; }
     }
 }
