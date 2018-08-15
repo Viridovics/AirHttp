@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\SteamHttp\SteamHttp.csproj" />
-    <ProjectReference Include="..\SteamHttp.NewtonsoftJson\SteamHttp.NewtonsoftJson.csproj" />
+    <ProjectReference Include="..\AirHttp\AirHttp.csproj" />
+    <ProjectReference Include="..\AirHttp.NewtonsoftJson\AirHttp.NewtonsoftJson.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

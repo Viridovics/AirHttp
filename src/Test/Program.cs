@@ -1,5 +1,5 @@
-﻿using SteamHttp.Responses.DefferedExtensions;
-using SteamHttp.NewtonsoftJson;
+﻿using AirHttp.Responses.DefferedExtensions;
+using AirHttp.NewtonsoftJson;
 
 namespace Test
 {
@@ -7,8 +7,8 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            //var s = new SteamHttpClient(new NewtonsoftJsonSteamHttpContentConfiguration());
-            var s = new SteamHttpNewtonsoftJsonClient();
+            //var s = new AirHttpClient(new NewtonsoftJsonAirHttpContentConfiguration());
+            var s = new AirHttpNewtonsoftJsonClient();
             var o = s.Get<Obj>(@"http://localhost:52870/api/Test/7");
             System.Console.WriteLine(o.Value.Id);
             s.Post<Obj, Obj>(@"http://localhost:52870/api/Test/", o.Value)

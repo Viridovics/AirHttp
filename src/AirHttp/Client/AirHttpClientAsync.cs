@@ -4,59 +4,59 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using SteamHttp.Configuration;
-using SteamHttp.Protocols;
-using SteamHttp.Responses;
+using AirHttp.Configuration;
+using AirHttp.Protocols;
+using AirHttp.Responses;
 
-namespace SteamHttp.Client
+namespace AirHttp.Client
 {
-    public class SteamHttpClientAsync
+    public class AirHttpClientAsync
     {
-        private ISteamHttpContentConfiguration _configuration;
-        public SteamHttpClientAsync(ISteamHttpContentConfiguration configuration)
+        private IAirHttpContentConfiguration _configuration;
+        public AirHttpClientAsync(IAirHttpContentConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public SteamHttpResponse<TResult> Get<TResult>(string url)
+        public AirHttpResponse<TResult> Get<TResult>(string url)
         {
             return QueryUrl<TResult>(url, HttpMethods.GetMethod);
         }
 
-        public SteamHttpResponse<TResult> Post<TPostBody, TResult>(string url, TPostBody obj)
+        public AirHttpResponse<TResult> Post<TPostBody, TResult>(string url, TPostBody obj)
         {
             return QueryUrl<TResult>(url, HttpMethods.PostMethod, _configuration.SerializeObject(obj));
         }
 
-        public SteamHttpResponse Post<TPostBody>(string url, TPostBody obj)
+        public AirHttpResponse Post<TPostBody>(string url, TPostBody obj)
         {
             return QueryUrl(url, HttpMethods.PostMethod, _configuration.SerializeObject(obj));
         }
 
-        private SteamHttpResponse<T> QueryUrl<T>(string url, string method, string body = null)
+        private AirHttpResponse<T> QueryUrl<T>(string url, string method, string body = null)
         {
             try
             {
                 var (httpResponse, content) = InnerQueryUrl(url,  method, body);
-                return SteamHttpResponse<T>.CreateSuccessResponseWithValue(httpResponse.StatusCode,
+                return AirHttpResponse<T>.CreateSuccessResponseWithValue(httpResponse.StatusCode,
                                                                     _configuration.DeserializeObject<T>(content));
             }
             catch(Exception e)
             {
-                return SteamHttpResponse<T>.CreateFaultedResponseWithValue(e);
+                return AirHttpResponse<T>.CreateFaultedResponseWithValue(e);
             }
         }
 
-        private SteamHttpResponse QueryUrl(string url, string method, string body = null)
+        private AirHttpResponse QueryUrl(string url, string method, string body = null)
         {
             try
             {
                 var (httpResponse, _) = InnerQueryUrl(url,  method, body);
-                return SteamHttpResponse.CreateSuccessResponse(httpResponse.StatusCode);
+                return AirHttpResponse.CreateSuccessResponse(httpResponse.StatusCode);
             }
             catch(Exception e)
             {
-                return SteamHttpResponse.CreateFaultedResponse(e);
+                return AirHttpResponse.CreateFaultedResponse(e);
             }
         }
 

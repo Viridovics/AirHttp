@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SteamHttp\SteamHttp.csproj" />
+    <ProjectReference Include="..\AirHttp\AirHttp.csproj" />
   </ItemGroup>
 
 </Project>

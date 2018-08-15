@@ -1,4 +1,4 @@
-namespace SteamHttp.Protocols
+namespace AirHttp.Protocols
 {
     public static class ContentTypes
     {

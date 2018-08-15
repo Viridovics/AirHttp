@@ -1,25 +1,25 @@
 using System;
 using System.Net;
 
-namespace SteamHttp.Responses
+namespace AirHttp.Responses
 {
-    public class SteamHttpResponse
+    public class AirHttpResponse
     {
-        protected SteamHttpResponse()
+        protected AirHttpResponse()
         { }
 
-        internal static SteamHttpResponse CreateFaultedResponse(Exception e)
+        internal static AirHttpResponse CreateFaultedResponse(Exception e)
         {
-            return new SteamHttpResponse
+            return new AirHttpResponse
             {
                 RequestFaulted = true,
                 InnerException = e
             };
         }
 
-        internal static SteamHttpResponse CreateSuccessResponse(HttpWebResponse httpWebResponse)
+        internal static AirHttpResponse CreateSuccessResponse(HttpWebResponse httpWebResponse)
         {
-            return new SteamHttpResponse
+            return new AirHttpResponse
             {
                 RequestFaulted = false,
                 ServerResponse = httpWebResponse
