@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SteamHttp\SteamHttp.csproj" />
+    <ProjectReference Include="..\SteamHttp.NewtonsoftJson\SteamHttp.NewtonsoftJson.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
