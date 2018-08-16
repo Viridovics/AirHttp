@@ -23,12 +23,12 @@ namespace AirHttp.Client
 
         public IAirHttpResponse<TResult> Post<TPostBody, TResult>(string url, TPostBody obj)
         {
-            return QueryUrl<TResult>(url, HttpMethods.Post, _configuration.SerializeObject(obj));
+            return QueryUrl<TResult>(url, HttpMethods.Post, new Lazy<string>(() => _configuration.SerializeObject(obj)));
         }
 
         public IAirHttpResponse Post<TPostBody>(string url, TPostBody obj)
         {
-            return QueryUrl(url, HttpMethods.Post, _configuration.SerializeObject(obj));
+            return QueryUrl(url, HttpMethods.Post, new Lazy<string>(() => _configuration.SerializeObject(obj)));
         }
 
         public IAirHttpResponse Head(string url)
@@ -36,7 +36,7 @@ namespace AirHttp.Client
             return QueryUrl(url, HttpMethods.Head);
         }
 
-        private IAirHttpResponse<T> QueryUrl<T>(string url, string method, string body = null)
+        private IAirHttpResponse<T> QueryUrl<T>(string url, string method, Lazy<string> body = null)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace AirHttp.Client
             }
         }
 
-        private IAirHttpResponse QueryUrl(string url, string method, string body = null)
+        private IAirHttpResponse QueryUrl(string url, string method, Lazy<string> body = null)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace AirHttp.Client
             }
         }
 
-        private (HttpWebResponse, string) InnerQueryUrl(string url, string method, string body = null)
+        private (HttpWebResponse, string) InnerQueryUrl(string url, string method, Lazy<string> body = null)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = _configuration.ContentType;
@@ -73,7 +73,7 @@ namespace AirHttp.Client
             {
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
-                    streamWriter.Write(body);
+                    streamWriter.Write(body.Value);
                     streamWriter.Flush();
                     streamWriter.Close();
                 }

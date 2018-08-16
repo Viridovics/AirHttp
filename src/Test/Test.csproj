@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AirHttp\AirHttp.csproj" />
     <ProjectReference Include="..\AirHttp.NewtonsoftJson\AirHttp.NewtonsoftJson.csproj" />
+    <ProjectReference Include="..\AirHttp.SystemXml\AirHttp.SystemXml.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
