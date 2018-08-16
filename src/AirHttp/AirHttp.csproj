@@ -9,8 +9,9 @@
     <Version>0.0.1</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Authors>Viridovics</Authors>
+    <Description>Lightweight http library for C#</Description>
     <PackageProjectUrl>https://github.com/Viridovics/AirHttp</PackageProjectUrl>
-    <PackageTags>http</PackageTags>
+    <PackageTags>http rest httpclient</PackageTags>
     <Copyright>Copyright ©2018 Viridovics</Copyright>
     <PackageLicenseUrl>https://github.com/Viridovics/AirHttp/blob/master/LICENSE</PackageLicenseUrl>
     <NeutralLanguage>en</NeutralLanguage>
