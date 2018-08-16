@@ -12,9 +12,17 @@ namespace Test
         static void Main(string[] args)
         {
             //var s = new AirHttpClient(new NewtonsoftJsonAirHttpContentConfiguration());
-            //var s = new AirHttpNewtonsoftJsonClient();
-            var s = new AirHttpSystemXmlClient();
+            var s = new AirHttpNewtonsoftJsonClient();
+            //var s = new AirHttpSystemXmlClient();
             var o = s.Get<TestObj>(@"http://localhost:52870/api/Test/7");
+            System.Console.WriteLine(o.Value.Id);
+            o = s.Get<TestObj>(@"http://localhost:52870/api/Test/7");
+            System.Console.WriteLine(o.Value.Id);
+            o = s.Get<TestObj>(@"http://localhost:52870/api/Test/7");
+            System.Console.WriteLine(o.Value.Id);
+            o = s.Get<TestObj>(@"http://localhost:52870/api/Test/7");
+            System.Console.WriteLine(o.Value.Id);
+            o = s.Get<TestObj>(@"http://localhost:52870/api/Test/7");
             System.Console.WriteLine(o.Value.Id);
             s.Post<TestObj, TestObj>(@"http://localhost:52870/api/Test/", o.Value)
                 .Fail(e => System.Console.WriteLine(e))
