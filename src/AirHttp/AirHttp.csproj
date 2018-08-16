@@ -4,4 +4,17 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.1</Version>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Viridovics</Authors>
+    <PackageProjectUrl>https://github.com/Viridovics/AirHttp</PackageProjectUrl>
+    <PackageTags>generic repository</PackageTags>
+    <Copyright>Copyright ©2018 Viridovics</Copyright>
+    <PackageLicenseUrl>https://github.com/Viridovics/AirHttp/blob/master/LICENSE</PackageLicenseUrl>
+    <NeutralLanguage>en</NeutralLanguage>
+    <RepositoryUrl>https://github.com/Viridovics/AirHttp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
 </Project>
