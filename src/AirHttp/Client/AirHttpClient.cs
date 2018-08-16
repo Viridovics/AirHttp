@@ -11,13 +11,13 @@ namespace AirHttp.Client
     public class AirHttpClient
     {
         private CookieCollection _cookies;
-        private IAirHttpContentConfiguration _configuration;
+        private IAirContentProcessor _configuration;
         private IHttpClientParameters _parameters;
 
-        public AirHttpClient(IAirHttpContentConfiguration configuration) : this(configuration, new DefaultHttpClientParameters())
+        public AirHttpClient(IAirContentProcessor configuration) : this(configuration, new DefaultHttpClientParameters())
         { }
 
-        public AirHttpClient(IAirHttpContentConfiguration configuration, IHttpClientParameters parameters)
+        public AirHttpClient(IAirContentProcessor configuration, IHttpClientParameters parameters)
         {
             _configuration = configuration;
             _parameters = parameters;
@@ -62,9 +62,9 @@ namespace AirHttp.Client
         {
             try
             {
-                var (httpResponse, content) = InnerQueryUrl(url, method, body);
-                return AirHttpResponse<T>.CreateSuccessResponseWithValue(httpResponse,
-                                                                    _configuration.DeserializeObject<T>(content));
+                var responseContent = InnerQueryUrl(url, method, body);
+                return AirHttpResponse<T>.CreateSuccessResponseWithValue(responseContent.Item1,
+                                                                    _configuration.DeserializeObject<T>(responseContent.Item2));
             }
             catch (Exception e)
             {
@@ -76,8 +76,8 @@ namespace AirHttp.Client
         {
             try
             {
-                var (httpResponse, _) = InnerQueryUrl(url, method, body);
-                return AirHttpResponse.CreateSuccessResponse(httpResponse);
+                var responseContent = InnerQueryUrl(url, method, body);
+                return AirHttpResponse.CreateSuccessResponse(responseContent.Item1);
             }
             catch (Exception e)
             {
@@ -85,7 +85,7 @@ namespace AirHttp.Client
             }
         }
 
-        private (HttpWebResponse, string) InnerQueryUrl(string url, string method, Lazy<string> body = null)
+        private Tuple<HttpWebResponse, string> InnerQueryUrl(string url, string method, Lazy<string> body = null)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = _configuration.ContentType;
@@ -106,7 +106,7 @@ namespace AirHttp.Client
             SaveCookie(httpResponse);
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
-                return (httpResponse, streamReader.ReadToEnd());
+                return new Tuple<HttpWebResponse, string>(httpResponse, streamReader.ReadToEnd());
             }
         }
 

@@ -6,7 +6,7 @@ using AirHttp.Protocols;
 
 namespace AirHttp.SystemXml.Configuration
 {
-    public class SystemXmlAirHttpContentConfiguration : IAirHttpContentConfiguration
+    public class SystemXmlAirContentProcessor : IAirContentProcessor
     {
         public string ContentType => ContentTypes.Xml;
 

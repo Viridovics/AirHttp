@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net45;net46</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -10,7 +10,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Authors>Viridovics</Authors>
     <PackageProjectUrl>https://github.com/Viridovics/AirHttp</PackageProjectUrl>
-    <PackageTags>generic repository</PackageTags>
+    <PackageTags>http</PackageTags>
     <Copyright>Copyright ©2018 Viridovics</Copyright>
     <PackageLicenseUrl>https://github.com/Viridovics/AirHttp/blob/master/LICENSE</PackageLicenseUrl>
     <NeutralLanguage>en</NeutralLanguage>

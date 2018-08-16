@@ -5,7 +5,7 @@ namespace AirHttp.SystemXml
 {
     public class AirHttpSystemXmlClient : AirHttpClient
     {
-        public AirHttpSystemXmlClient() : base(new SystemXmlAirHttpContentConfiguration())
+        public AirHttpSystemXmlClient() : base(new SystemXmlAirContentProcessor())
         { }
     }
 }
