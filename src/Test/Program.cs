@@ -15,7 +15,7 @@ namespace Test
                 .Success(val => System.Console.WriteLine("val is " + val.Id));
 
             s.Head(@"http://localhost:52870/api/Test/14")
-                .IfFaulted(e => System.Console.WriteLine(e))
+                .Fail(e => System.Console.WriteLine(e))
                 .Success(resp => System.Console.WriteLine($"Content-Length: {resp.ContentLength}"));
 
         }

@@ -1,10 +1,9 @@
 using System;
 using System.Net;
-using AirHttp.Responses.Interfaces;
 
 namespace AirHttp.Responses
 {
-    internal class AirHttpResponse : IAirHttpResponse
+    public class AirHttpResponse
     {
         protected AirHttpResponse()
         { }

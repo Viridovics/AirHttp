@@ -4,6 +4,7 @@ using System.Net;
 using AirHttp.Configuration;
 using AirHttp.Protocols;
 using AirHttp.Responses;
+using AirHttp.Responses.Interfaces;
 
 namespace AirHttp.Client
 {
@@ -15,27 +16,27 @@ namespace AirHttp.Client
             _configuration = configuration;
         }
 
-        public AirHttpResponse<TResult> Get<TResult>(string url)
+        public IAirHttpResponse<TResult> Get<TResult>(string url)
         {
             return QueryUrl<TResult>(url, HttpMethods.Get);
         }
 
-        public AirHttpResponse<TResult> Post<TPostBody, TResult>(string url, TPostBody obj)
+        public IAirHttpResponse<TResult> Post<TPostBody, TResult>(string url, TPostBody obj)
         {
             return QueryUrl<TResult>(url, HttpMethods.Post, _configuration.SerializeObject(obj));
         }
 
-        public AirHttpResponse Post<TPostBody>(string url, TPostBody obj)
+        public IAirHttpResponse Post<TPostBody>(string url, TPostBody obj)
         {
             return QueryUrl(url, HttpMethods.Post, _configuration.SerializeObject(obj));
         }
 
-        public AirHttpResponse Head(string url)
+        public IAirHttpResponse Head(string url)
         {
             return QueryUrl(url, HttpMethods.Head);
         }
 
-        private AirHttpResponse<T> QueryUrl<T>(string url, string method, string body = null)
+        private IAirHttpResponse<T> QueryUrl<T>(string url, string method, string body = null)
         {
             try
             {
@@ -49,7 +50,7 @@ namespace AirHttp.Client
             }
         }
 
-        private AirHttpResponse QueryUrl(string url, string method, string body = null)
+        private IAirHttpResponse QueryUrl(string url, string method, string body = null)
         {
             try
             {

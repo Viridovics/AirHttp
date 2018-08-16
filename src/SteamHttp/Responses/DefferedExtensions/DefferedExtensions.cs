@@ -1,14 +1,13 @@
 using System;
 using System.Net;
-using AirHttp.Responses.Interfaces;
 
 namespace AirHttp.Responses.DefferedExtensions
 {
     public static class DefferedExtensions
     {
-        public static TAirHttpResponse Fail<TAirHttpResponse>(this TAirHttpResponse AirHttpResponse,
+        public static TAirHttpResponse IfFaulted<TAirHttpResponse>(this TAirHttpResponse AirHttpResponse,
                                                                         Action<Exception> callback) 
-                                                                        where TAirHttpResponse : IAirHttpResponse
+                                                                        where TAirHttpResponse : AirHttpResponse
         {
             if(AirHttpResponse.Failed)
             {
@@ -17,8 +16,8 @@ namespace AirHttp.Responses.DefferedExtensions
             return AirHttpResponse;
         }
 
-        public static IAirHttpResponse Success(this IAirHttpResponse AirHttpResponse,
-                                                    Action<IAirHttpResponse> callback)
+        public static AirHttpResponse Success(this AirHttpResponse AirHttpResponse,
+                                                    Action<AirHttpResponse> callback)
         {
             if(!AirHttpResponse.Failed)
             {
@@ -27,8 +26,8 @@ namespace AirHttp.Responses.DefferedExtensions
             return AirHttpResponse;
         }
 
-        public static IAirHttpResponse<TValue> Success<TValue>(this IAirHttpResponse<TValue> AirHttpResponse,
-                                                                        Action<IAirHttpResponse<TValue>> callback)
+        public static AirHttpResponse<TValue> Success<TValue>(this AirHttpResponse<TValue> AirHttpResponse,
+                                                                        Action<AirHttpResponse<TValue>> callback)
         {
             if(!AirHttpResponse.Failed)
             {
@@ -37,15 +36,15 @@ namespace AirHttp.Responses.DefferedExtensions
             return AirHttpResponse;
         }
 
-        public static IAirHttpResponse<TValue> Success<TValue>(this IAirHttpResponse<TValue> AirHttpResponse,
+        public static AirHttpResponse<TValue> Success<TValue>(this AirHttpResponse<TValue> AirHttpResponse,
                                                                         Action<TValue> callback)
         {
             return AirHttpResponse.Success(r => callback(r.Value));
         }
 
         public static TAirHttpResponse Always<TAirHttpResponse>(this TAirHttpResponse AirHttpResponse,
-                                                                        Action<IAirHttpResponse> callback) 
-                                                                        where TAirHttpResponse : IAirHttpResponse
+                                                                        Action<TAirHttpResponse> callback) 
+                                                                        where TAirHttpResponse : AirHttpResponse
         {
             callback(AirHttpResponse);
             return AirHttpResponse;
