@@ -1,12 +1,12 @@
 # AirHttp
 
-AirHttp is lightweight http library for C#
+AirHttp is lightweight http library for .NET
 
 ## Support features
 
 * GET, POST, PUT, DELETE, HEAD
 * Server-side coookie
-* Simple way to support custom content processor (json, xml, etc)
+* Selection any serialization/deserialization framework for JSON, XML, etc
 
 ## Installation
 

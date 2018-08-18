@@ -48,6 +48,17 @@ namespace AirHttp.Client
             return QueryUrl(url, HttpMethods.Put, new Lazy<string>(() => _configuration.SerializeObject(obj)));
         }
 
+        
+        public IAirHttpResponse<TResult> Patch<TPostBody, TResult>(string url, TPostBody obj)
+        {
+            return QueryUrl<TResult>(url, HttpMethods.Patch, new Lazy<string>(() => _configuration.SerializeObject(obj)));
+        }
+
+        public IAirHttpResponse Patch<TPostBody>(string url, TPostBody obj)
+        {
+            return QueryUrl(url, HttpMethods.Patch, new Lazy<string>(() => _configuration.SerializeObject(obj)));
+        }
+
         public IAirHttpResponse Head(string url)
         {
             return QueryUrl(url, HttpMethods.Head);
