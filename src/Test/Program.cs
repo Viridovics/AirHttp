@@ -5,6 +5,10 @@ using AirHttp.Client;
 using System;
 using System.Xml.Serialization;
 using Contracts;
+using System.Threading.Tasks;
+using AirHttp.Configuration;
+using System.Text;
+using System.Threading;
 
 namespace Test
 {
@@ -15,6 +19,22 @@ namespace Test
             //var s = new AirHttpClient(new NewtonsoftJsonAirHttpContentConfiguration());
             //var s = new AirHttpNewtonsoftJsonClient();
             //var s = new AirHttpSystemXmlClient();
+            StringBuilder requestData = new StringBuilder();
+            System.Console.WriteLine(requestData.ToString());
+            var airClientAsync = new AirHttpClientAsync(new NewtonsoftJsonAirContentProcessor() , new DefaultHttpClientParameters()
+            {
+                TimeoutInMilliseconds = 7000
+            });
+            var cts = new CancellationTokenSource();
+            var token = cts.Token;
+            var o1T = airClientAsync.Get<TestObj>(@"http://localhost:52870/api/Test/7", token);
+            var t = Task.Run(() => o1T); 
+            Thread.Sleep(1000);
+            cts.Cancel();
+            var o1 = o1T.Result;
+            System.Console.WriteLine(o1T.Result.FaultException);
+            //System.Console.WriteLine(o1.Value.Id);
+            return;
             var airClient = new AirHttpClient(new NewtonsoftJsonAirContentProcessor());
             var o = airClient.Get<TestObj>(@"http://localhost:52870/api/Test/7");
 
