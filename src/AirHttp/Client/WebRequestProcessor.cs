@@ -8,22 +8,23 @@ using AirHttp.Configuration;
 
 namespace AirHttp.Client
 {
-    internal sealed class WebRequestProcessor
+    internal sealed class WebRequestProcessor : IWebRequestProcessor
     {
         private const int _defaultTimeoutLag = 5000;
-        internal async Task<Tuple<HttpWebResponse, string>> Process(HttpWebRequest httpWebRequest, Lazy<string> body, CancellationToken cancellationToken)
+        public async Task<Tuple<HttpWebResponse, string>> Process(HttpWebRequest httpWebRequest, Lazy<string> body, Encoding encoding, CancellationToken cancellationToken)
         {
             if (body != null)
             {
-                using (var requestStream = await httpWebRequest.GetRequestStreamAsync())
+                using (var requestStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
                 {
-                    var bodyBytes = Encoding.UTF8.GetBytes(body.Value);
-                    await requestStream.WriteAsync(bodyBytes, 0, bodyBytes.Length, cancellationToken);
-                    await requestStream.FlushAsync();
+                    var bodyBytes = encoding.GetBytes(body.Value);
+                    await requestStream.WriteAsync(bodyBytes, 0, bodyBytes.Length, cancellationToken).ConfigureAwait(false);
+                    await requestStream.FlushAsync().ConfigureAwait(false);
                 }
             }
             var requestState = new RequestState();
             requestState.Request = httpWebRequest;
+            requestState.Encoding = encoding;
 
             var result = httpWebRequest.BeginGetResponse(new AsyncCallback(ResponseCallback), requestState);
 
@@ -31,7 +32,7 @@ namespace AirHttp.Client
                                                     httpWebRequest.Timeout == ConfigurationConstants.InfiniteTimeout ?
                                                     ConfigurationConstants.InfiniteTimeout :
                                                     httpWebRequest.Timeout + _defaultTimeoutLag,
-                                                    cancellationToken);
+                                                    cancellationToken).ConfigureAwait(false);
 
             if (!waitSuccess)
             {
@@ -47,7 +48,7 @@ namespace AirHttp.Client
             return new Tuple<HttpWebResponse, string>(requestState.Response, requestState.requestData.ToString());
         }
         
-        private static async Task<bool> WaitOneAsync(WaitHandle handle, int millisecondsTimeout, CancellationToken cancellationToken)
+        private async Task<bool> WaitOneAsync(WaitHandle handle, int millisecondsTimeout, CancellationToken cancellationToken)
         {
             RegisteredWaitHandle registeredHandle = null;
             var tokenRegistration = default(CancellationTokenRegistration);
@@ -63,7 +64,7 @@ namespace AirHttp.Client
                 tokenRegistration = cancellationToken.Register(
                     state => ((TaskCompletionSource<bool>)state).TrySetCanceled(),
                     tcs);
-                return await tcs.Task;
+                return await tcs.Task.ConfigureAwait(false);
             }
             finally
             {
@@ -101,7 +102,7 @@ namespace AirHttp.Client
                 int read = responseStream.EndRead(asyncResult);
                 if (read > 0)
                 {
-                    requestState.requestData.Append(Encoding.UTF8.GetString(requestState.BufferRead, 0, read));
+                    requestState.requestData.Append(requestState.Encoding.GetString(requestState.BufferRead, 0, read));
                     IAsyncResult asynchronousResult = responseStream.BeginRead(requestState.BufferRead, 0, RequestState.BUFFER_SIZE, new AsyncCallback(ReadCallback), requestState);
                     return;
                 }
@@ -129,6 +130,7 @@ namespace AirHttp.Client
             public HttpWebResponse Response { get; set; }
             public Exception ResponseException { get; set; }
             public Stream StreamResponse { get; set; }
+            public Encoding Encoding { get; set; }
         }
     }
 }

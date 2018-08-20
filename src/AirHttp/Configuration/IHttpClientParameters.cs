@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace AirHttp.Configuration
 {
@@ -6,5 +7,6 @@ namespace AirHttp.Configuration
     {
         int TimeoutInMilliseconds { get; }
         bool SaveCookie { get; }
+        Encoding Encoding { get; set; }
     }
 }

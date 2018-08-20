@@ -7,7 +7,7 @@ open FsUnit.Xunit
 
 open AirHttp.Configuration
 
-let defaultParameters = new DefaultHttpClientParameters()
+let defaultParameters = new HttpClientParameters()
 
 [<Fact>]
 let ``Test default connection timeout parameter`` () =

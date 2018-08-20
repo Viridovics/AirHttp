@@ -42,7 +42,6 @@ namespace Test
                 .Fail(e => System.Console.WriteLine(e))
                 .Success(resp => System.Console.WriteLine($"Content-Length: {resp.ContentLength}"));
             //System.Console.WriteLine(o1.Value.Id);
-            return;
             var airClient = new AirHttpClient(new NewtonsoftJsonAirContentProcessor());
             var o = airClient.Get<TestObj>(@"http://localhost:52870/api/Test/7");
 
@@ -60,6 +59,22 @@ namespace Test
                 .Success(val => System.Console.WriteLine("val is " + val.Id));
 
             airClient.Head(@"http://localhost:52870/api/Test/14")
+                .Fail(e => System.Console.WriteLine(e))
+                .Success(resp => System.Console.WriteLine($"Content-Length: {resp.ContentLength}"));
+
+            o = airClient.Get<TestObj>(@"http://localhost:52870/api/Test/7");
+            System.Console.WriteLine(o.Value.Id);
+            o = await airClient.GetAsync<TestObj>(@"http://localhost:52870/api/Test/7");
+            System.Console.WriteLine(o.Value.Id);
+            o = await airClient.GetAsync<TestObj>(@"http://localhost:52870/api/Test/7");
+            System.Console.WriteLine(o.Value.Id);
+            o = await airClient.GetAsync<TestObj>(@"http://localhost:52870/api/Test/7");
+            System.Console.WriteLine(o.Value.Id);
+            (await airClient.PostAsync<TestObj, TestObj>(@"http://localhost:52870/api/Test/", o.Value))
+                .Fail(e => System.Console.WriteLine(e))
+                .Success(val => System.Console.WriteLine("val is " + val.Id));
+
+            (await airClient.HeadAsync(@"http://localhost:52870/api/Test/14"))
                 .Fail(e => System.Console.WriteLine(e))
                 .Success(resp => System.Console.WriteLine($"Content-Length: {resp.ContentLength}"));
 
