@@ -20,6 +20,12 @@ namespace Test
             //var s = new AirHttpClient(new NewtonsoftJsonAirHttpContentConfiguration());
             //var s = new AirHttpNewtonsoftJsonClient();
             //var s = new AirHttpSystemXmlClient();
+            var contentProcessor = new SimpleJsonContentProcessor();
+            var airClientCust = new AirHttpClient(contentProcessor,
+                                              new HttpClientParameters
+                                              {
+                                                  TimeoutInMilliseconds = 2000
+                                              });
             System.Console.WriteLine("Start");
             var airClientAsync = new AirHttpClientAsync(new SimpleJsonContentProcessor());
             var cts = new CancellationTokenSource();

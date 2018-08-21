@@ -66,7 +66,16 @@ var contentProcessor = new NewtonsoftJsonAirContentProcessor();
 ```
 using AirHttp.Client;
 
-var airClient = new AirHttpClient(contentProcessor);
+var airClient = new AirHttpClient(contentProcessor); //With default parameters
+
+// If you want to change default http parameters then use HttpClientParameters/IHttpClientParameters
+using AirHttp.Configuration;
+
+var airClient = new AirHttpClient(contentProcessor,
+                                    new HttpClientParameters
+                                    {
+                                        TimeoutInMilliseconds = 2000
+                                    });
 ```
 ### Get
 
