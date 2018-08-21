@@ -115,4 +115,5 @@ Licensed under the [MIT](LICENSE) License.
 
 # Credits
 AirHttp library uses [SimpleJson.cs](https://github.com/facebook-csharp-sdk/simple-json/blob/master/src/SimpleJson/SimpleJson.cs) under [MIT License](https://github.com/facebook-csharp-sdk/simple-json/blob/master/LICENSE.txt)
+
 AirHttp example uses Json library ([Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)) under [MIT License](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)
