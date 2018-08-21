@@ -52,14 +52,24 @@ namespace AirHttp.Client
 
         private async Task<Tuple<HttpWebResponse, string>> InnerQueryUrl(string url, string method, Lazy<string> body, CancellationToken cancellationToken)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpWebRequest.ContentType = _contentProcessor.ContentType;
-            httpWebRequest.Method = method;
-            httpWebRequest.Timeout = _parameters.TimeoutInMilliseconds;
+            var httpWebRequest = CreateWebRequest(url, method);
             FillCookie(httpWebRequest);
             var responseContent = await _webRequestProcessor.Process(httpWebRequest, body, _parameters.Encoding, cancellationToken).ConfigureAwait(false);
             SaveCookie(responseContent.Item1);
             return responseContent;
+        }
+
+        private HttpWebRequest CreateWebRequest(string url, string method)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+            httpWebRequest.ContentType = _contentProcessor.ContentType;
+            httpWebRequest.Method = method;
+            httpWebRequest.Timeout = _parameters.TimeoutInMilliseconds;
+            if(_parameters.Proxy != null)
+            {
+                httpWebRequest.Proxy = _parameters.Proxy;
+            }
+            return httpWebRequest;
         }
 
         private void FillCookie(HttpWebRequest request)
