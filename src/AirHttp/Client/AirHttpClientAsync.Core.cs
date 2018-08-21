@@ -69,6 +69,10 @@ namespace AirHttp.Client
             {
                 httpWebRequest.Proxy = _parameters.Proxy;
             }
+            if(_parameters.ConfigureRequest != null)
+            {
+                _parameters.ConfigureRequest(httpWebRequest);
+            }
             return httpWebRequest;
         }
 

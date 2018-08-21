@@ -10,5 +10,6 @@ namespace AirHttp.Configuration
         public bool SaveCookie { get; set; } = true;
         public Encoding Encoding { get; set; } = Encoding.UTF8;
         public IWebProxy Proxy { get; set; }
+        public Action<HttpWebRequest> ConfigureRequest { get; set; }
     }
 }
