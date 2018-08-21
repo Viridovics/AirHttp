@@ -54,6 +54,21 @@ namespace AirHttp.Responses
         public bool Failed { get; protected set; }
         public Exception FaultException { get; protected set; }
 
-        protected HttpWebResponse ServerResponse { get; set; }
+        private HttpWebResponse _serverResponse;
+        protected HttpWebResponse ServerResponse 
+        { 
+            get
+            {
+                if (Failed)
+                {
+                    throw FaultException;
+                }
+                return _serverResponse;
+            } 
+            set
+            {
+                _serverResponse = value;
+            } 
+        }
     }
 }

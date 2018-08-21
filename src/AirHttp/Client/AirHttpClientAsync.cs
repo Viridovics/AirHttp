@@ -12,21 +12,26 @@ namespace AirHttp.Client
     public class AirHttpClientAsync
     {
         private CookieCollection _cookies;
-        private IAirContentProcessor _configuration;
+        private IAirContentProcessor _contentProcessor;
         private IHttpClientParameters _parameters;
         private IWebRequestProcessor _webRequestProcessor;
 
-        public AirHttpClientAsync(IAirContentProcessor configuration) : this(configuration, new HttpClientParameters())
+        public AirHttpClientAsync(IAirContentProcessor contentProcessor) : this(contentProcessor, new HttpClientParameters())
         { }
 
-        public AirHttpClientAsync(IAirContentProcessor configuration, IHttpClientParameters parameters) : this(configuration, parameters, new WebRequestProcessor())
+        public AirHttpClientAsync(IAirContentProcessor contentProcessor, IHttpClientParameters parameters) : this(contentProcessor, parameters, new WebRequestProcessor())
         { }
 
-        internal AirHttpClientAsync(IAirContentProcessor configuration, IHttpClientParameters parameters, IWebRequestProcessor webRequestProcessor)
+        internal AirHttpClientAsync(IAirContentProcessor contentProcessor, IHttpClientParameters parameters, IWebRequestProcessor webRequestProcessor)
         {
-            _configuration = configuration;
+            _contentProcessor = contentProcessor;
             _parameters = parameters;
             _webRequestProcessor = webRequestProcessor;
+        }
+
+        public async Task<IAirHttpResponse> Get(string url, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await QueryUrl(url, HttpMethods.Get, null, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<IAirHttpResponse<TResult>> Get<TResult>(string url, CancellationToken cancellationToken = default(CancellationToken))
@@ -34,35 +39,48 @@ namespace AirHttp.Client
             return await QueryUrl<TResult>(url, HttpMethods.Get, null, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IAirHttpResponse<TResult>> Post<TPostBody, TResult>(string url, TPostBody obj, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IAirHttpResponse> Post(string url, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryUrl<TResult>(url, HttpMethods.Post, new Lazy<string>(() => _configuration.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
+            return await QueryUrl(url, HttpMethods.Post, null, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IAirHttpResponse> Post<TPostBody>(string url, TPostBody obj, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IAirHttpResponse<TResult>> Post<TBody, TResult>(string url, TBody obj, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryUrl(url, HttpMethods.Post, new Lazy<string>(() => _configuration.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
+            return await QueryUrl<TResult>(url, HttpMethods.Post, new Lazy<string>(() => _contentProcessor.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IAirHttpResponse<TResult>> Put<TPostBody, TResult>(string url, TPostBody obj, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IAirHttpResponse> Post<TBody>(string url, TBody obj, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryUrl<TResult>(url, HttpMethods.Put, new Lazy<string>(() => _configuration.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
+            return await QueryUrl(url, HttpMethods.Post, new Lazy<string>(() => _contentProcessor.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
+        }
+        public async Task<IAirHttpResponse> Put(string url, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await QueryUrl(url, HttpMethods.Put, null, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IAirHttpResponse> Put<TPostBody>(string url, TPostBody obj, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IAirHttpResponse<TResult>> Put<TBody, TResult>(string url, TBody obj, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryUrl(url, HttpMethods.Put, new Lazy<string>(() => _configuration.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
+            return await QueryUrl<TResult>(url, HttpMethods.Put, new Lazy<string>(() => _contentProcessor.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
         }
 
-
-        public async Task<IAirHttpResponse<TResult>> Patch<TPostBody, TResult>(string url, TPostBody obj, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IAirHttpResponse> Put<TBody>(string url, TBody obj, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryUrl<TResult>(url, HttpMethods.Patch, new Lazy<string>(() => _configuration.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
+            return await QueryUrl(url, HttpMethods.Put, new Lazy<string>(() => _contentProcessor.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IAirHttpResponse> Patch<TPostBody>(string url, TPostBody obj, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IAirHttpResponse> Patch(string url, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryUrl(url, HttpMethods.Patch, new Lazy<string>(() => _configuration.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
+            return await QueryUrl(url, HttpMethods.Patch, null, cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<IAirHttpResponse<TResult>> Patch<TBody, TResult>(string url, TBody obj, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await QueryUrl<TResult>(url, HttpMethods.Patch, new Lazy<string>(() => _contentProcessor.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<IAirHttpResponse> Patch<TBody>(string url, TBody obj, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await QueryUrl(url, HttpMethods.Patch, new Lazy<string>(() => _contentProcessor.SerializeObject(obj)), cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<IAirHttpResponse> Head(string url, CancellationToken cancellationToken = default(CancellationToken))
@@ -81,7 +99,7 @@ namespace AirHttp.Client
             {
                 var responseContent = await InnerQueryUrl(url, method, body, cancellationToken).ConfigureAwait(false);
                 return AirHttpResponse<T>.CreateSuccessResponseWithValue(responseContent.Item1,
-                                                                    _configuration.DeserializeObject<T>(responseContent.Item2));
+                                                                    _contentProcessor.DeserializeObject<T>(responseContent.Item2));
             }
             catch (Exception e)
             {
@@ -105,7 +123,7 @@ namespace AirHttp.Client
         private async Task<Tuple<HttpWebResponse, string>> InnerQueryUrl(string url, string method, Lazy<string> body, CancellationToken cancellationToken)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpWebRequest.ContentType = _configuration.ContentType;
+            httpWebRequest.ContentType = _contentProcessor.ContentType;
             httpWebRequest.Method = method;
             httpWebRequest.Timeout = _parameters.TimeoutInMilliseconds;
             FillCookie(httpWebRequest);

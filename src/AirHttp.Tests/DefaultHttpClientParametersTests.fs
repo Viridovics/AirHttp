@@ -1,4 +1,4 @@
-module Tests
+module DefaultHttpClientParametersTests
 
 open System
 open Xunit
@@ -7,7 +7,7 @@ open FsUnit.Xunit
 
 open AirHttp.Configuration
 
-let defaultParameters = new HttpClientParameters()
+let defaultParameters = HttpClientParameters()
 
 [<Fact>]
 let ``Test default connection timeout parameter`` () =

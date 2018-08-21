@@ -77,7 +77,14 @@ namespace Test
             (await airClient.HeadAsync(@"http://localhost:52870/api/Test/14"))
                 .Fail(e => System.Console.WriteLine(e))
                 .Success(resp => System.Console.WriteLine($"Content-Length: {resp.ContentLength}"));
-
+            airClient.Get<string[]>("http://localhost:52870/api/values/")
+                .Success(values =>
+                {
+                    foreach(var val in values)
+                    {
+                        System.Console.WriteLine(val);
+                    }
+                });
         }
     }
 

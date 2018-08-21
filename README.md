@@ -7,7 +7,7 @@ AirHttp is lightweight http library for .NET
 * GET, POST, PUT, DELETE, HEAD, PATCH, OPTIONS
 * Support async programming model
 * Server-side coookie
-* Selection any serialization/deserialization framework for JSON, XML, etc
+* Support any serialization/deserialization framework for JSON, XML, etc
 * .NET Framework 4.5 and netstandard 2.0 assemblies
 
 ## Installation
