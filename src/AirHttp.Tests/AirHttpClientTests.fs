@@ -43,10 +43,13 @@ let createHttpClientParametersWithoutCookie ()=
 let createAirHttpClient(webRequestProcessor) = AirHttpClient(FakeContentProcessor(), createHttpClientParametersWithoutCookie(), webRequestProcessor)
 
 [<Fact>]
-let ``Check get, post, patch, delete, put, head, exec method headers for empty body and content requests`` () =
+let ``Check get, post, patch, delete, put, head, exec method headers for empty body and empty content requests`` () =
     let url = @"http://localhost"
     let fakeProcessor = createFakeWebRequestProcessor()
     let airClient = createAirHttpClient(fakeProcessor)
+
+    airClient.Exec("method", url).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "method"
 
     airClient.Get(url).Failed  |> should equal false
     fakeProcessor.PassedMethodName |> should equal "GET"
@@ -66,6 +69,64 @@ let ``Check get, post, patch, delete, put, head, exec method headers for empty b
     airClient.Delete(url).Failed  |> should equal false
     fakeProcessor.PassedMethodName |> should equal "DELETE"
 
-    airClient.Exec("method", url).Failed  |> should equal false
+[<Fact>]
+let ``Check get, post, patch, put, exec method headers for empty body and not empty content requests`` () =
+    let url = @"http://localhost"
+    let fakeProcessor = createFakeWebRequestProcessor()
+    let airClient = createAirHttpClient(fakeProcessor)
+
+    airClient.Exec<Object>("method", url).Failed  |> should equal false
     fakeProcessor.PassedMethodName |> should equal "method"
+
+    airClient.Get<Object>(url).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "GET"
+
+    airClient.Post<Object>(url).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "POST"
+
+    airClient.Put<Object>(url).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PUT"
+
+    airClient.Patch<Object>(url).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PATCH"
+
+[<Fact>]
+let ``Check post, patch, put, exec method headers for not empty body and empty content requests`` () =
+    let url = @"http://localhost"
+    let fakeProcessor = createFakeWebRequestProcessor()
+    let airClient = createAirHttpClient(fakeProcessor)
+
+    let bodyObj = Object()
+
+    airClient.Exec<Object>("method", url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "method"
+
+    airClient.Post<Object>(url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "POST"
+
+    airClient.Put<Object>(url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PUT"
+
+    airClient.Patch<Object>(url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PATCH"
+
+[<Fact>]
+let ``Check post, patch, put, exec method headers for not empty body and not empty content requests`` () =
+    let url = @"http://localhost"
+    let fakeProcessor = createFakeWebRequestProcessor()
+    let airClient = createAirHttpClient(fakeProcessor)
+
+    let bodyObj = Object()
+
+    airClient.Exec<Object, Object>("method", url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "method"
+
+    airClient.Post<Object, Object>(url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "POST"
+
+    airClient.Put<Object, Object>(url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PUT"
+
+    airClient.Patch<Object, Object>(url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PATCH"
 
