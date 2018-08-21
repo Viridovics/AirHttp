@@ -1,9 +1,9 @@
 module AirHttpClientGetTests
 
-open System
 open System.Net
-open System.Text
 open System.Runtime.Serialization
+open System.Text
+
 open Xunit
 
 open FsUnit.Xunit
@@ -34,7 +34,7 @@ type FakeWebRequestProcessor() =
                 async{
                     body |> should equal null
                     encoding |> should equal Encoding.UTF8
-                    return (createOkHttpWebResponse(), "{\"Id\":5, \"Name\":\"Ivan\"}")
+                    return (createOkHttpWebResponse(), "{\"id\":5, \"name\":\"Ivan\"}")
                 } |> Async.StartAsTask
 
 let createHttpClientParametersWithoutCookie ()= 

@@ -28,7 +28,11 @@ Install-Package AirHttp
 ```
 using AirHttp.ContentProcessors;
 
-var contentProcessor = new SimpleJsonContentProcessor();
+var contentProcessor = new SimpleJsonContentProcessor(); // By default process json field names in case sensitive mode. Support [DataContract]/[DataMember] attribute.
+
+or
+
+var contentProcessor = new WeakJsonContentProcessor(); // Process json field names in case sensitive mode.
 
 ```
 

@@ -20,58 +20,58 @@
 // VERSION:
 
 // NOTE: uncomment the following line to make SimpleJson class internal.
-#define SIMPLE_JSON_INTERNAL
+#define SIMPLE_JSON_IGNORE_CASE_INTERNAL
 
 // NOTE: uncomment the following line to make JsonArray and JsonObject class internal.
-//#define SIMPLE_JSON_OBJARRAYINTERNAL
+//#define SIMPLE_JSON_IGNORE_CASE_OBJARRAYINTERNAL
 
 // NOTE: uncomment the following line to enable dynamic support.
-//#define SIMPLE_JSON_DYNAMIC
+//#define SIMPLE_JSON_IGNORE_CASE_DYNAMIC
 
 // NOTE: uncomment the following line to enable DataContract support.
-#define SIMPLE_JSON_DATACONTRACT
+//#define SIMPLE_JSON_IGNORE_CASE_DATACONTRACT
 
 // NOTE: uncomment the following line to enable IReadOnlyCollection<T> and IReadOnlyList<T> support.
-//#define SIMPLE_JSON_READONLY_COLLECTIONS
+//#define SIMPLE_JSON_IGNORE_CASE_READONLY_COLLECTIONS
 
 // NOTE: uncomment the following line to disable linq expressions/compiled lambda (better performance) instead of method.invoke().
 // define if you are using .net framework <= 3.0 or < WP7.5
-//#define SIMPLE_JSON_NO_LINQ_EXPRESSION
+//#define SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
 
 // NOTE: uncomment the following line if you are compiling under Window Metro style application/library.
 // usually already defined in properties
 //#define NETFX_CORE;
 
-// If you are targetting WinStore, WP8 and NET4.5+ PCL make sure to #define SIMPLE_JSON_TYPEINFO;
+// If you are targetting WinStore, WP8 and NET4.5+ PCL make sure to #define SIMPLE_JSON_IGNORE_CASE_TYPEINFO;
 
 // original json parsing code from http://techblog.procurios.nl/k/618/news/view/14605/14863/How-do-I-write-my-own-parser-for-JSON.html
 
 #if NETFX_CORE
-#define SIMPLE_JSON_TYPEINFO
+#define SIMPLE_JSON_IGNORE_CASE_TYPEINFO
 #endif
 
 using System;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
-#if !SIMPLE_JSON_NO_LINQ_EXPRESSION
+#if !SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
 using System.Linq.Expressions;
 #endif
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-#if SIMPLE_JSON_DYNAMIC
+#if SIMPLE_JSON_IGNORE_CASE_DYNAMIC
 using System.Dynamic;
 #endif
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-using SimpleJson.Reflection;
+using SimpleJsonIgnoreCase.Reflection;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable RedundantExplicitArrayCreation
 // ReSharper disable SuggestUseVarKeywordEvident
-namespace SimpleJson
+namespace SimpleJsonIgnoreCase
 {
     /// <summary>
     /// Represents the json array.
@@ -79,7 +79,7 @@ namespace SimpleJson
     [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-#if SIMPLE_JSON_OBJARRAYINTERNAL
+#if SIMPLE_JSON_IGNORE_CASE_OBJARRAYINTERNAL
     internal
 #else
     public
@@ -113,13 +113,13 @@ namespace SimpleJson
     [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-#if SIMPLE_JSON_OBJARRAYINTERNAL
+#if SIMPLE_JSON_IGNORE_CASE_OBJARRAYINTERNAL
     internal
 #else
     public
 #endif
  class JsonObject :
-#if SIMPLE_JSON_DYNAMIC
+#if SIMPLE_JSON_IGNORE_CASE_DYNAMIC
  DynamicObject,
 #endif
  IDictionary<string, object>
@@ -174,7 +174,7 @@ namespace SimpleJson
         /// <param name="value">The value.</param>
         public void Add(string key, object value)
         {
-            _members.Add(key, value);
+            _members.Add(key.ToLower(), value);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace SimpleJson
         /// </returns>
         public bool ContainsKey(string key)
         {
-            return _members.ContainsKey(key);
+            return _members.ContainsKey(key.ToLower());
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace SimpleJson
         /// <returns></returns>
         public bool Remove(string key)
         {
-            return _members.Remove(key);
+            return _members.Remove(key.ToLower());
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace SimpleJson
         /// <returns></returns>
         public bool TryGetValue(string key, out object value)
         {
-            return _members.TryGetValue(key, out value);
+            return _members.TryGetValue(key.ToLower(), out value);
         }
 
         /// <summary>
@@ -234,8 +234,8 @@ namespace SimpleJson
         /// <value></value>
         public object this[string key]
         {
-            get { return _members[key]; }
-            set { _members[key] = value; }
+            get { return _members[key.ToLower()]; }
+            set { _members[key.ToLower()] = value; }
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace SimpleJson
         /// <param name="item">The item.</param>
         public void Add(KeyValuePair<string, object> item)
         {
-            _members.Add(item.Key, item.Value);
+            _members.Add(item.Key.ToLower(), item.Value);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace SimpleJson
         /// </returns>
         public bool Contains(KeyValuePair<string, object> item)
         {
-            return _members.ContainsKey(item.Key) && _members[item.Key] == item.Value;
+            return _members.ContainsKey(item.Key.ToLower()) && _members[item.Key.ToLower()] == item.Value;
         }
 
         /// <summary>
@@ -311,7 +311,7 @@ namespace SimpleJson
         /// <returns></returns>
         public bool Remove(KeyValuePair<string, object> item)
         {
-            return _members.Remove(item.Key);
+            return _members.Remove(item.Key.ToLower());
         }
 
         /// <summary>
@@ -345,7 +345,7 @@ namespace SimpleJson
             return SimpleJson.SerializeObject(this);
         }
 
-#if SIMPLE_JSON_DYNAMIC
+#if SIMPLE_JSON_IGNORE_CASE_DYNAMIC
         /// <summary>
         /// Provides implementation for type conversion operations. Classes derived from the <see cref="T:System.Dynamic.DynamicObject"/> class can override this method to specify dynamic behavior for operations that convert an object from one type to another.
         /// </summary>
@@ -484,7 +484,7 @@ namespace SimpleJson
     }
 }
 
-namespace SimpleJson
+namespace SimpleJsonIgnoreCase
 {
     /// <summary>
     /// This class encodes and decodes JSON strings.
@@ -494,7 +494,7 @@ namespace SimpleJson
     /// All numbers are parsed to doubles.
     /// </summary>
     [GeneratedCode("simple-json", "1.0.0")]
-#if SIMPLE_JSON_INTERNAL
+#if SIMPLE_JSON_IGNORE_CASE_INTERNAL
     internal
 #else
     public
@@ -1185,7 +1185,7 @@ namespace SimpleJson
             {
                 return _currentJsonSerializerStrategy ??
                     (_currentJsonSerializerStrategy =
-#if SIMPLE_JSON_DATACONTRACT
+#if SIMPLE_JSON_IGNORE_CASE_DATACONTRACT
  DataContractJsonSerializerStrategy
 #else
  PocoJsonSerializerStrategy
@@ -1208,7 +1208,7 @@ namespace SimpleJson
             }
         }
 
-#if SIMPLE_JSON_DATACONTRACT
+#if SIMPLE_JSON_IGNORE_CASE_DATACONTRACT
 
         private static DataContractJsonSerializerStrategy _dataContractJsonSerializerStrategy;
         [System.ComponentModel.EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -1224,7 +1224,7 @@ namespace SimpleJson
     }
     
     [GeneratedCode("simple-json", "1.0.0")]
-#if SIMPLE_JSON_INTERNAL
+#if SIMPLE_JSON_IGNORE_CASE_INTERNAL
     internal
 #else
     public
@@ -1237,7 +1237,7 @@ namespace SimpleJson
     }
 
     [GeneratedCode("simple-json", "1.0.0")]
-#if SIMPLE_JSON_INTERNAL
+#if SIMPLE_JSON_IGNORE_CASE_INTERNAL
     internal
 #else
     public
@@ -1514,9 +1514,9 @@ namespace SimpleJson
         }
     }
 
-#if SIMPLE_JSON_DATACONTRACT
+#if SIMPLE_JSON_IGNORE_CASE_DATACONTRACT
     [GeneratedCode("simple-json", "1.0.0")]
-#if SIMPLE_JSON_INTERNAL
+#if SIMPLE_JSON_IGNORE_CASE_INTERNAL
     internal
 #else
     public
@@ -1598,7 +1598,7 @@ namespace SimpleJson
         // This class is meant to be copied into other libraries. So we want to exclude it from Code Analysis rules
  	    // that might be in place in the target project.
         [GeneratedCode("reflection-utils", "1.0.0")]
-#if SIMPLE_JSON_REFLECTION_UTILS_PUBLIC
+#if SIMPLE_JSON_IGNORE_CASE_REFLECTION_UTILS_PUBLIC
         public
 #else
         internal
@@ -1613,7 +1613,7 @@ namespace SimpleJson
 
             public delegate TValue ThreadSafeDictionaryValueFactory<TKey, TValue>(TKey key);
 
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
             public static TypeInfo GetTypeInfo(Type type)
             {
                 return type.GetTypeInfo();
@@ -1627,7 +1627,7 @@ namespace SimpleJson
 
             public static Attribute GetAttribute(MemberInfo info, Type type)
             {
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 if (info == null || type == null || !info.IsDefined(type))
                     return null;
                 return info.GetCustomAttribute(type);
@@ -1641,7 +1641,7 @@ namespace SimpleJson
             public static Type GetGenericListElementType(Type type)
             {
                 IEnumerable<Type> interfaces;
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 interfaces = type.GetTypeInfo().ImplementedInterfaces;
 #else
                 interfaces = type.GetInterfaces();
@@ -1660,7 +1660,7 @@ namespace SimpleJson
             public static Attribute GetAttribute(Type objectType, Type attributeType)
             {
 
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 if (objectType == null || attributeType == null || !objectType.GetTypeInfo().IsDefined(attributeType))
                     return null;
                 return objectType.GetTypeInfo().GetCustomAttribute(attributeType);
@@ -1673,7 +1673,7 @@ namespace SimpleJson
 
             public static Type[] GetGenericTypeArguments(Type type)
             {
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 return type.GetTypeInfo().GenericTypeArguments;
 #else
                 return type.GetGenericArguments();
@@ -1695,7 +1695,7 @@ namespace SimpleJson
                 return (genericDefinition == typeof(IList<>)
                     || genericDefinition == typeof(ICollection<>)
                     || genericDefinition == typeof(IEnumerable<>)
-#if SIMPLE_JSON_READONLY_COLLECTIONS
+#if SIMPLE_JSON_IGNORE_CASE_READONLY_COLLECTIONS
                     || genericDefinition == typeof(IReadOnlyCollection<>)
                     || genericDefinition == typeof(IReadOnlyList<>)
 #endif
@@ -1709,7 +1709,7 @@ namespace SimpleJson
 
             public static bool IsTypeDictionary(Type type)
             {
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 if (typeof(IDictionary<,>).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
                     return true;
 #else
@@ -1740,7 +1740,7 @@ namespace SimpleJson
 
             public static IEnumerable<ConstructorInfo> GetConstructors(Type type)
             {
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 return type.GetTypeInfo().DeclaredConstructors;
 #else
                 return type.GetConstructors();
@@ -1778,7 +1778,7 @@ namespace SimpleJson
 
             public static IEnumerable<PropertyInfo> GetProperties(Type type)
             {
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 return type.GetRuntimeProperties();
 #else
                 return type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
@@ -1787,7 +1787,7 @@ namespace SimpleJson
 
             public static IEnumerable<FieldInfo> GetFields(Type type)
             {
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 return type.GetRuntimeFields();
 #else
                 return type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
@@ -1796,7 +1796,7 @@ namespace SimpleJson
 
             public static MethodInfo GetGetterMethodInfo(PropertyInfo propertyInfo)
             {
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 return propertyInfo.GetMethod;
 #else
                 return propertyInfo.GetGetMethod(true);
@@ -1805,7 +1805,7 @@ namespace SimpleJson
 
             public static MethodInfo GetSetterMethodInfo(PropertyInfo propertyInfo)
             {
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 return propertyInfo.SetMethod;
 #else
                 return propertyInfo.GetSetMethod(true);
@@ -1814,7 +1814,7 @@ namespace SimpleJson
 
             public static ConstructorDelegate GetContructor(ConstructorInfo constructorInfo)
             {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
+#if SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
                 return GetConstructorByReflection(constructorInfo);
 #else
                 return GetConstructorByExpression(constructorInfo);
@@ -1823,7 +1823,7 @@ namespace SimpleJson
 
             public static ConstructorDelegate GetContructor(Type type, params Type[] argsType)
             {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
+#if SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
                 return GetConstructorByReflection(type, argsType);
 #else
                 return GetConstructorByExpression(type, argsType);
@@ -1841,7 +1841,7 @@ namespace SimpleJson
                 return constructorInfo == null ? null : GetConstructorByReflection(constructorInfo);
             }
 
-#if !SIMPLE_JSON_NO_LINQ_EXPRESSION
+#if !SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
 
             public static ConstructorDelegate GetConstructorByExpression(ConstructorInfo constructorInfo)
             {
@@ -1872,7 +1872,7 @@ namespace SimpleJson
 
             public static GetDelegate GetGetMethod(PropertyInfo propertyInfo)
             {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
+#if SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
                 return GetGetMethodByReflection(propertyInfo);
 #else
                 return GetGetMethodByExpression(propertyInfo);
@@ -1881,7 +1881,7 @@ namespace SimpleJson
 
             public static GetDelegate GetGetMethod(FieldInfo fieldInfo)
             {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
+#if SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
                 return GetGetMethodByReflection(fieldInfo);
 #else
                 return GetGetMethodByExpression(fieldInfo);
@@ -1899,7 +1899,7 @@ namespace SimpleJson
                 return delegate(object source) { return fieldInfo.GetValue(source); };
             }
 
-#if !SIMPLE_JSON_NO_LINQ_EXPRESSION
+#if !SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
 
             public static GetDelegate GetGetMethodByExpression(PropertyInfo propertyInfo)
             {
@@ -1922,7 +1922,7 @@ namespace SimpleJson
 
             public static SetDelegate GetSetMethod(PropertyInfo propertyInfo)
             {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
+#if SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
                 return GetSetMethodByReflection(propertyInfo);
 #else
                 return GetSetMethodByExpression(propertyInfo);
@@ -1931,7 +1931,7 @@ namespace SimpleJson
 
             public static SetDelegate GetSetMethod(FieldInfo fieldInfo)
             {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
+#if SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
                 return GetSetMethodByReflection(fieldInfo);
 #else
                 return GetSetMethodByExpression(fieldInfo);
@@ -1949,7 +1949,7 @@ namespace SimpleJson
                 return delegate(object source, object value) { fieldInfo.SetValue(source, value); };
             }
 
-#if !SIMPLE_JSON_NO_LINQ_EXPRESSION
+#if !SIMPLE_JSON_IGNORE_CASE_NO_LINQ_EXPRESSION
 
             public static SetDelegate GetSetMethodByExpression(PropertyInfo propertyInfo)
             {
@@ -1973,7 +1973,7 @@ namespace SimpleJson
 
             public static BinaryExpression Assign(Expression left, Expression right)
             {
-#if SIMPLE_JSON_TYPEINFO
+#if SIMPLE_JSON_IGNORE_CASE_TYPEINFO
                 return Expression.Assign(left, right);
 #else
                 MethodInfo assign = typeof(Assigner<>).MakeGenericType(left.Type).GetMethod("Assign");
