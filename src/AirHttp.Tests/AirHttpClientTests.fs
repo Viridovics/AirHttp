@@ -43,7 +43,7 @@ let createHttpClientParametersWithoutCookie ()=
 let createAirHttpClient(webRequestProcessor) = AirHttpClient(FakeContentProcessor(), createHttpClientParametersWithoutCookie(), webRequestProcessor)
 
 [<Fact>]
-let ``Check get, post, patch, delete, put, head method headers for empty body and content requests`` () =
+let ``Check get, post, patch, delete, put, head, exec method headers for empty body and content requests`` () =
     let url = @"http://localhost"
     let fakeProcessor = createFakeWebRequestProcessor()
     let airClient = createAirHttpClient(fakeProcessor)
@@ -65,4 +65,7 @@ let ``Check get, post, patch, delete, put, head method headers for empty body an
 
     airClient.Delete(url).Failed  |> should equal false
     fakeProcessor.PassedMethodName |> should equal "DELETE"
+
+    airClient.Exec("method", url).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "method"
 
