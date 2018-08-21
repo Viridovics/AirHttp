@@ -14,5 +14,7 @@ namespace AirHttp.Responses.Interfaces
         bool Failed { get; }
 
         Exception FaultException { get; }
+
+        HttpWebResponse OriginalResponse { get; }
     }
 }

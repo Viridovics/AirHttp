@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AirHttp.Configuration;
 using System.Text;
 using System.Threading;
+using AirHttp.ContentProcessors;
 
 namespace Test
 {
@@ -20,7 +21,7 @@ namespace Test
             //var s = new AirHttpNewtonsoftJsonClient();
             //var s = new AirHttpSystemXmlClient();
             System.Console.WriteLine("Start");
-            var airClientAsync = new AirHttpClientAsync(new NewtonsoftJsonAirContentProcessor());
+            var airClientAsync = new AirHttpClientAsync(new SimpleJsonContentProcessor());
             var cts = new CancellationTokenSource();
             var token = cts.Token;
             var oT =  await airClientAsync.Get<TestObj>(@"http://localhost:52870/api/Test/7", token);

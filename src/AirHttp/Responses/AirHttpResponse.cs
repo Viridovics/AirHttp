@@ -18,12 +18,12 @@ namespace AirHttp.Responses
             };
         }
 
-        internal static AirHttpResponse CreateSuccessResponse(HttpWebResponse httpWebResponse)
+        internal static AirHttpResponse CreateSuccessfulResponse(HttpWebResponse httpWebResponse)
         {
             return new AirHttpResponse
             {
                 Failed = false,
-                ServerResponse = httpWebResponse
+                OriginalResponse = httpWebResponse
             };
         }
 
@@ -31,7 +31,7 @@ namespace AirHttp.Responses
         {
             get
             {
-                return ServerResponse.StatusCode;
+                return OriginalResponse.StatusCode;
             }
         }
 
@@ -39,7 +39,7 @@ namespace AirHttp.Responses
         {
             get
             {
-                return ServerResponse.ContentLength;
+                return OriginalResponse.ContentLength;
             }
         }
 
@@ -47,27 +47,27 @@ namespace AirHttp.Responses
         {
             get
             {
-                return ServerResponse.LastModified;
+                return OriginalResponse.LastModified;
             }
         }
 
         public bool Failed { get; protected set; }
         public Exception FaultException { get; protected set; }
 
-        private HttpWebResponse _serverResponse;
-        protected HttpWebResponse ServerResponse 
+        private HttpWebResponse _originalResponse;
+        public HttpWebResponse OriginalResponse 
         { 
             get
             {
                 if (Failed)
                 {
-                    throw FaultException;
+                    throw new InvalidOperationException("Response is failed. See details in FaultException", FaultException);
                 }
-                return _serverResponse;
+                return _originalResponse;
             } 
             set
             {
-                _serverResponse = value;
+                _originalResponse = value;
             } 
         }
     }

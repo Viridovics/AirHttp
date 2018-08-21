@@ -28,7 +28,7 @@ namespace AirHttp.Client
             try
             {
                 var responseContent = await InnerQueryUrl(url, method, body, cancellationToken).ConfigureAwait(false);
-                return AirHttpResponse<T>.CreateSuccessResponseWithValue(responseContent.Item1,
+                return AirHttpResponse<T>.CreateSuccessfulResponseWithValue(responseContent.Item1,
                                                                     _contentProcessor.DeserializeObject<T>(responseContent.Item2));
             }
             catch (Exception e)
@@ -42,7 +42,7 @@ namespace AirHttp.Client
             try
             {
                 var responseContent = await InnerQueryUrl(url, method, body, cancellationToken).ConfigureAwait(false);
-                return AirHttpResponse.CreateSuccessResponse(responseContent.Item1);
+                return AirHttpResponse.CreateSuccessfulResponse(responseContent.Item1);
             }
             catch (Exception e)
             {

@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Include="AirHttpClientTests.fs" />
     <Compile Include="DefaultHttpClientParametersTests.fs" />
+    <Compile Include="AirHttpResponseTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

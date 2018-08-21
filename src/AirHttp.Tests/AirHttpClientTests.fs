@@ -36,11 +36,11 @@ type FakeWebRequestProcessor() =
 let createFakeWebRequestProcessor() = FakeWebRequestProcessor()
 
 let createHttpClientParametersWithoutCookie ()= 
-    let parameters = HttpClientParameters()
+    let parameters = new HttpClientParameters()
     parameters.SaveCookie <- false
     parameters
 
-let createAirHttpClient(webRequestProcessor) = AirHttpClient(FakeContentProcessor(), createHttpClientParametersWithoutCookie(), webRequestProcessor)
+let createAirHttpClient(webRequestProcessor) = AirHttpClient(new FakeContentProcessor(), createHttpClientParametersWithoutCookie(), webRequestProcessor)
 
 [<Fact>]
 let ``Check get, post, patch, delete, put, head, exec method headers for empty body and empty content requests`` () =

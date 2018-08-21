@@ -23,7 +23,16 @@ Install-Package AirHttp
 
 ## Simple start
 
-### Create custom content processor
+### Use default json content processor
+
+```
+using AirHttp.ContentProcessors;
+
+var contentProcessor = new SimpleJsonContentProcessor();
+
+```
+
+### Or create custom content processor
 
 [Example processor](https://github.com/Viridovics/AirHttp/blob/master/src/AirHttp.NewtonsoftJson/Configuration/NewtonsoftJsonAirContentProcessor.cs) uses Json library ([Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json))
 ```
@@ -48,13 +57,16 @@ namespace YourProjectNamespace
         }
     }
 }
+
+
+var contentProcessor = new NewtonsoftJsonAirContentProcessor();
 ```
 
 ### Create AirHttpClient
 ```
 using AirHttp.Client;
 
-var airClient = new AirHttpClient(new NewtonsoftJsonAirContentProcessor());
+var airClient = new AirHttpClient(contentProcessor);
 ```
 ### Get
 
@@ -102,4 +114,5 @@ Copyright (c) Viridovics
 Licensed under the [MIT](LICENSE) License.
 
 # Credits
+AirHttp library uses [SimpleJson.cs](https://github.com/facebook-csharp-sdk/simple-json/blob/master/src/SimpleJson/SimpleJson.cs) under [MIT License](https://github.com/facebook-csharp-sdk/simple-json/blob/master/LICENSE.txt)
 AirHttp example uses Json library ([Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json)) under [MIT License](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)

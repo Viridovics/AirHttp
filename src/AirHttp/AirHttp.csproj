@@ -6,10 +6,15 @@
 
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.5</Version>
+    <Version>0.0.6</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Authors>Viridovics</Authors>
-    <Description>Lightweight http library for .NET. Simple post, get, delete and other queries (sync/async). There is no serialization/deserialization framework dependency.</Description>
+    <Description>
+      Lightweight http library for .NET. Simple post, get, delete and other queries (sync/async). There is no serialization/deserialization framework dependency.
+    
+      Examples:
+      https://github.com/Viridovics/AirHttp#simple-start
+    </Description>
     <PackageProjectUrl>https://github.com/Viridovics/AirHttp</PackageProjectUrl>
     <PackageTags>http rest httpclient async</PackageTags>
     <Copyright>Copyright ©2018 Viridovics</Copyright>
