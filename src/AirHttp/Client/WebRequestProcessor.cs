@@ -33,7 +33,10 @@ namespace AirHttp.Client
                                                     ConfigurationConstants.InfiniteTimeout :
                                                     httpWebRequest.Timeout + _defaultTimeoutLag,
                                                     cancellationToken).ConfigureAwait(false);
-
+            if (requestState.StreamResponse != null)
+            {
+                requestState.StreamResponse.Close();
+            }
             if (!waitSuccess)
             {
                 httpWebRequest.Abort();

@@ -5,7 +5,7 @@ open Xunit.Abstractions
 type MyTests(output:ITestOutputHelper) =
 *)
 
-module AirHttpClientTests
+module AirHttpClientMethodNamesTests
 
 open System
 open System.Net
