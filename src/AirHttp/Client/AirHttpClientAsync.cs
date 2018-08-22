@@ -17,6 +17,11 @@ namespace AirHttp.Client
         public AirHttpClientAsync(IAirContentProcessor contentProcessor, IHttpClientParameters parameters) : this(contentProcessor, parameters, new WebRequestProcessor())
         { }
 
+        public void Reconfigure(IHttpClientParameters parameters)
+        {
+            _parameters = parameters;
+        }
+
         public async Task<IAirHttpResponse> Get(string url, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await Exec(HttpMethods.Get, url, cancellationToken).ConfigureAwait(false);

@@ -130,3 +130,24 @@ let ``Check post, patch, put, exec method headers for not empty body and not emp
     airClient.Patch<Object, Object>(url, bodyObj).Failed  |> should equal false
     fakeProcessor.PassedMethodName |> should equal "PATCH"
 
+[<Fact>]
+let ``Reconfigure method name`` () =
+    let url = @"http://localhost"
+    let fakeProcessor = createFakeWebRequestProcessor()
+    let airClient = createAirHttpClient(fakeProcessor)
+
+    let bodyObj = Object()
+    airClient.Post<Object, Object>(url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "POST"
+
+    let parameters = new HttpClientParameters()
+    parameters.SaveCookie <- false
+    parameters.ConfigureRequest <- (fun request -> request.Method <- "ReconfiguredMethod")
+    airClient.Reconfigure(parameters)
+
+    airClient.Put<Object, Object>(url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "ReconfiguredMethod"
+
+    airClient.Patch<Object, Object>(url, bodyObj).Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "ReconfiguredMethod"
+

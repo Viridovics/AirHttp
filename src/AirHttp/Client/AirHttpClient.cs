@@ -22,6 +22,11 @@ namespace AirHttp.Client
             _airHttpClientAsync = new AirHttpClientAsync(contentProcessor, parameters, webRequestProcessor);
         }
 
+        public void Reconfigure(IHttpClientParameters parameters)
+        {
+            _airHttpClientAsync.Reconfigure(parameters);
+        }
+
         #region SyncMethods
 
         public IAirHttpResponse Get(string url)
