@@ -10,6 +10,7 @@ open FsUnit.Xunit
 open AirHttp.Client
 open AirHttp.Configuration
 open AirHttp.ContentProcessors
+open System
 
 type ResponseObject() = 
     member val Id = -1 with get, set
@@ -63,3 +64,13 @@ let ``Succesful post with value response`` () =
     response.Value.Name |> should equal "Ivan"
     response.Value.Id |> should equal 5
 
+[<Fact>]
+let ``Failed post with value response`` () =
+    let url = @"http://localhost"
+    let fakeProcessor = new FakeWebRequestProcessor((fun _ -> raise(new Exception("postException"))), 
+                                                    "{\"id\":5, \"name\":\"Ivan\"}")
+    let airClient = createAirHttpClient(fakeProcessor)
+
+    let response = airClient.Post<RequestObject, ResponseObject>(url, new RequestObject("post"))
+    response.Failed |> should equal true
+    response.FaultException.Message |> should equal "postException"
