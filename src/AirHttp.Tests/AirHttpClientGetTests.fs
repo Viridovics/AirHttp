@@ -24,6 +24,7 @@ type ResponseObject() =
 type OkHttpWebResponse() =
    inherit HttpWebResponse()
    override this.StatusCode = HttpStatusCode.OK
+   override this.ContentLength = 42L
 
 let createOkHttpWebResponse() : HttpWebResponse =
     upcast new OkHttpWebResponse()
@@ -55,6 +56,7 @@ let ``Succesful get with empty response`` () =
 
     let response = airClient.Get(url)
     response.StatusCode |> should equal HttpStatusCode.OK
+    response.ContentLength |> should equal 42L
 
 [<Fact>]
 let ``Succesful get with value response`` () =

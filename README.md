@@ -121,6 +121,19 @@ getResult.Fail(e => //Process error)
                         });
 ```
 
+### Simple REST api client
+
+```
+using AirHttp.Client.Rest
+
+var restClient = new AirRestClient<IdType, CollectionObject>(@"http://domain/api/controller", new WeakJsonContentProcessor());
+restClient.Get() // Get all collection
+restClient.Get(id) // Get object by id/key
+restClient.Post(object) // Post new object
+restClient.Put(id, object) // Put object
+restClient.Delete(id) // Delete object by id/key
+```
+
 # License
 Copyright (c) Viridovics
 

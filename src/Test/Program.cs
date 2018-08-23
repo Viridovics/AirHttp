@@ -10,6 +10,8 @@ using AirHttp.Configuration;
 using System.Text;
 using System.Threading;
 using AirHttp.ContentProcessors;
+using AirHttp.Client.Rest;
+using System.Linq;
 
 namespace Test
 {
@@ -17,10 +19,19 @@ namespace Test
     {
         static async Task Main(string[] args)
         {
+            var uri = new Uri(@"http://localhost:52870/api/Rest");
+            
+            var restClient = new AirRestClient<int, TestObj>(@"http://localhost:52870/api/Rest", new WeakJsonContentProcessor());
+            var collection = restClient.Get().Value.ToList();
+            var o = restClient.Get(1).Value;
+            restClient.Post(o);
+            restClient.Put(3, o);
+            restClient.Delete(5);
+            return;
             //var s = new AirHttpClient(new NewtonsoftJsonAirHttpContentConfiguration());
             //var s = new AirHttpNewtonsoftJsonClient();
             //var s = new AirHttpSystemXmlClient();
-            var contentProcessor = new SimpleJsonContentProcessor();
+            /*var contentProcessor = new SimpleJsonContentProcessor();
             var airClientCust = new AirHttpClient(contentProcessor,
                                               new HttpClientParameters
                                               {
@@ -92,7 +103,7 @@ namespace Test
                     }
                 })
                 .Success(resp => System.Console.WriteLine(resp.StatusCode))
-                .Always(resp => System.Console.WriteLine(resp.Value));
+                .Always(resp => System.Console.WriteLine(resp.Value));*/
         }
     }
 
