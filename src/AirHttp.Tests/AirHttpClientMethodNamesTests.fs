@@ -151,3 +151,90 @@ let ``Reconfigure method name`` () =
     airClient.Patch<Object, Object>(url, bodyObj).Failed  |> should equal false
     fakeProcessor.PassedMethodName |> should equal "ReconfiguredMethod"
 
+[<Fact>]
+let ``Check async get, post, patch, delete, put, head, exec method headers for empty body and empty content requests`` () =
+    let url = @"http://localhost"
+    let fakeProcessor = createFakeWebRequestProcessor()
+    let airClient = createAirHttpClient(fakeProcessor)
+
+    airClient.ExecAsync("method", url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "method"
+
+    airClient.GetAsync(url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "GET"
+
+    airClient.PostAsync(url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "POST"
+
+    airClient.PutAsync(url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PUT"
+
+    airClient.PatchAsync(url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PATCH"
+
+    airClient.HeadAsync(url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "HEAD"
+
+    airClient.DeleteAsync(url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "DELETE"
+
+[<Fact>]
+let ``Check async get, post, patch, put, exec method headers for empty body and not empty content requests`` () =
+    let url = @"http://localhost"
+    let fakeProcessor = createFakeWebRequestProcessor()
+    let airClient = createAirHttpClient(fakeProcessor)
+
+    airClient.ExecAsync<Object>("method", url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "method"
+
+    airClient.GetAsync<Object>(url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "GET"
+
+    airClient.PostAsync<Object>(url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "POST"
+
+    airClient.PutAsync<Object>(url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PUT"
+
+    airClient.PatchAsync<Object>(url).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PATCH"
+
+[<Fact>]
+let ``Check async post, patch, put, exec method headers for not empty body and empty content requests`` () =
+    let url = @"http://localhost"
+    let fakeProcessor = createFakeWebRequestProcessor()
+    let airClient = createAirHttpClient(fakeProcessor)
+
+    let bodyObj = Object()
+
+    airClient.ExecAsync<Object>("method", url, bodyObj).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "method"
+
+    airClient.PostAsync<Object>(url, bodyObj).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "POST"
+
+    airClient.PutAsync<Object>(url, bodyObj).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PUT"
+
+    airClient.PatchAsync<Object>(url, bodyObj).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PATCH"
+
+[<Fact>]
+let ``Check async post, patch, put, exec method headers for not empty body and not empty content requests`` () =
+    let url = @"http://localhost"
+    let fakeProcessor = createFakeWebRequestProcessor()
+    let airClient = createAirHttpClient(fakeProcessor)
+
+    let bodyObj = Object()
+
+    airClient.ExecAsync<Object, Object>("method", url, bodyObj).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "method"
+
+    airClient.PostAsync<Object, Object>(url, bodyObj).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "POST"
+
+    airClient.PutAsync<Object, Object>(url, bodyObj).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PUT"
+
+    airClient.PatchAsync<Object, Object>(url, bodyObj).Result.Failed  |> should equal false
+    fakeProcessor.PassedMethodName |> should equal "PATCH"
