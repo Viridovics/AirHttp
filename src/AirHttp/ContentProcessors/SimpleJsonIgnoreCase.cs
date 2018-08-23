@@ -79,6 +79,7 @@ namespace SimpleJsonIgnoreCase
     [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_IGNORE_CASE_OBJARRAYINTERNAL
     internal
 #else
@@ -113,6 +114,7 @@ namespace SimpleJsonIgnoreCase
     [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_IGNORE_CASE_OBJARRAYINTERNAL
     internal
 #else
@@ -494,6 +496,7 @@ namespace SimpleJsonIgnoreCase
     /// All numbers are parsed to doubles.
     /// </summary>
     [GeneratedCode("simple-json", "1.0.0")]
+    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_IGNORE_CASE_INTERNAL
     internal
 #else
@@ -1237,6 +1240,7 @@ namespace SimpleJsonIgnoreCase
     }
 
     [GeneratedCode("simple-json", "1.0.0")]
+    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_IGNORE_CASE_INTERNAL
     internal
 #else
@@ -1514,7 +1518,9 @@ namespace SimpleJsonIgnoreCase
         }
     }
 
+
 #if SIMPLE_JSON_IGNORE_CASE_DATACONTRACT
+[ExcludeFromCodeCoverage]
     [GeneratedCode("simple-json", "1.0.0")]
 #if SIMPLE_JSON_IGNORE_CASE_INTERNAL
     internal

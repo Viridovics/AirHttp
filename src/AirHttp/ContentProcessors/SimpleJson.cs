@@ -79,6 +79,7 @@ namespace SimpleJson
     [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
@@ -113,6 +114,7 @@ namespace SimpleJson
     [GeneratedCode("simple-json", "1.0.0")]
     [EditorBrowsable(EditorBrowsableState.Never)]
     [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_OBJARRAYINTERNAL
     internal
 #else
@@ -494,6 +496,7 @@ namespace SimpleJson
     /// All numbers are parsed to doubles.
     /// </summary>
     [GeneratedCode("simple-json", "1.0.0")]
+    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
@@ -1237,6 +1240,7 @@ namespace SimpleJson
     }
 
     [GeneratedCode("simple-json", "1.0.0")]
+    [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_INTERNAL
     internal
 #else
@@ -1514,6 +1518,7 @@ namespace SimpleJson
         }
     }
 
+[ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_DATACONTRACT
     [GeneratedCode("simple-json", "1.0.0")]
 #if SIMPLE_JSON_INTERNAL
@@ -1598,6 +1603,7 @@ namespace SimpleJson
         // This class is meant to be copied into other libraries. So we want to exclude it from Code Analysis rules
  	    // that might be in place in the target project.
         [GeneratedCode("reflection-utils", "1.0.0")]
+        [ExcludeFromCodeCoverage]
 #if SIMPLE_JSON_REFLECTION_UTILS_PUBLIC
         public
 #else
