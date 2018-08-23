@@ -51,7 +51,6 @@ namespace Test
             //System.Console.WriteLine(o1.Value.Id);
             var airClient = new AirHttpClient(new NewtonsoftJsonAirContentProcessor());
             var o = airClient.Get<TestObj>(@"http://localhost:52870/api/Test/7");
-
             System.Console.WriteLine(o.Value.Id);
             o = airClient.Get<TestObj>(@"http://localhost:52870/api/Test/7");
             System.Console.WriteLine(o.Value.Id);
@@ -91,7 +90,9 @@ namespace Test
                     {
                         System.Console.WriteLine(val);
                     }
-                });
+                })
+                .Success(resp => System.Console.WriteLine(resp.StatusCode))
+                .Always(resp => System.Console.WriteLine(resp.Value));
         }
     }
 
