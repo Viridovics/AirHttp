@@ -19,12 +19,14 @@ namespace AirHttp.Client
                 {
                     var bodyBytes = encoding.GetBytes(body.Value);
                     await requestStream.WriteAsync(bodyBytes, 0, bodyBytes.Length, cancellationToken).ConfigureAwait(false);
-                    await requestStream.FlushAsync().ConfigureAwait(false);
+                    await requestStream.FlushAsync(cancellationToken).ConfigureAwait(false);
                 }
             }
-            var requestState = new RequestState();
-            requestState.Request = httpWebRequest;
-            requestState.Encoding = encoding;
+            var requestState = new RequestState
+            {
+                Request = httpWebRequest,
+                Encoding = encoding
+            };
 
             var result = httpWebRequest.BeginGetResponse(new AsyncCallback(ResponseCallback), requestState);
 
@@ -33,10 +35,7 @@ namespace AirHttp.Client
                                                     ConfigurationConstants.InfiniteTimeout :
                                                     httpWebRequest.Timeout + _defaultTimeoutLag,
                                                     cancellationToken).ConfigureAwait(false);
-            if (requestState.StreamResponse != null)
-            {
-                requestState.StreamResponse.Close();
-            }
+            requestState.StreamResponse?.Close();
             if (!waitSuccess)
             {
                 httpWebRequest.Abort();
@@ -71,8 +70,7 @@ namespace AirHttp.Client
             }
             finally
             {
-                if (registeredHandle != null)
-                    registeredHandle.Unregister(null);
+                registeredHandle?.Unregister(null);
                 tokenRegistration.Dispose();
             }
         }
