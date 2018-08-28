@@ -85,10 +85,14 @@ namespace AirHttp.Uri
             AddPartToResult(result, _protocol);
             AddPartToResult(result, _www);
             AddPartToResult(result, _main, _segments.Any());
-            foreach (var segment in _segments)
+            if(_segments.Any())
             {
-                result.Append("/");
-                result.Append(segment);
+                if(!string.IsNullOrEmpty(_main))
+                {
+                    result.Append("/");
+                }
+                var joinedSegments = string.Join("/", _segments);
+                AddPartToResult(result, joinedSegments);
             }
             if (_parameters.Any())
             {

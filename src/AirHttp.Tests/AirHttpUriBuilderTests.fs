@@ -60,3 +60,9 @@ let ``Check extensions`` () =
     "domain.com/".AddWWW().ToString() |> should equal "www.domain.com/"
     "domain.com/".AddSegment("test").ToString() |> should equal "domain.com/test"
     "domain.com/".AddParam("param", "value").ToString() |> should equal "domain.com/?param=value"
+
+let inline (!>) (x:^a) : ^b = ((^a or ^b) : (static member op_Implicit : ^a -> ^b) x) 
+[<Fact>]
+let ``Add empty builder`` () =
+    let builder = (new UriBuilder()).AddSegment("domain.com/").AddHttp().AddWWW()
+    !> builder.AddParam("param", "value") |> should equal "http://www.domain.com/?param=value"

@@ -12,6 +12,7 @@ using System.Threading;
 using AirHttp.ContentProcessors;
 using AirHttp.Client.Rest;
 using System.Linq;
+using AirHttp.Uri.Extensions;
 
 namespace Test
 {

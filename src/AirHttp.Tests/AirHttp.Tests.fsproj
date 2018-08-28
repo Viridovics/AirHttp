@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AirHttp\AirHttp.csproj" />
+    <ProjectReference Include="..\AirHttp.Uri\AirHttp.Uri.csproj" />
   </ItemGroup>
 
 </Project>
