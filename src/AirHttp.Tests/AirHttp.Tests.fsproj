@@ -13,6 +13,7 @@
     <Compile Include="AirHttpDefferedExtensionsTests.fs" />
     <Compile Include="DefaultHttpClientParametersTests.fs" />
     <Compile Include="AirHttpResponseTests.fs" />
+    <Compile Include="AirHttpUriBuilderTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
