@@ -12,6 +12,7 @@ using System.Threading;
 using AirHttp.ContentProcessors;
 using AirHttp.Client.Rest;
 using System.Linq;
+using AirHttp.UriFluentBuilder.Extensions;
 
 namespace Test
 {
@@ -19,14 +20,22 @@ namespace Test
     {
         static async Task Main(string[] args)
         {
+            var uriWithSegments = "localhost:52870".AddHttp().AddSegment("api").AddSegment("rest");
+            //uriWithSegments is 'http://localhost:52870/api/rest'
+            var uriWithQuery = "localhost:52870".AddHttps().AddWWW().AddQueryParams(new { id = 5 })
+                                                                    .AddQueryParam("point", "42");
+            //uriWithQuery is 'https://www.localhost:52870?id=5&point=42'
+            System.Console.WriteLine(uriWithQuery);
+
+
             var uri = new Uri(@"http://localhost:52870/api/Rest");
             
-            var restClient = new AirRestClient<int, TestObj>(@"http://localhost:52870/api/Rest", new WeakJsonContentProcessor());
+            /*var restClient = new AirRestClient<int, TestObj>(@"http://localhost:52870/api/Rest", new WeakJsonContentProcessor());
             var collection = restClient.Get().Value.ToList();
             var o = restClient.Get(1).Value;
             restClient.Post(o);
             restClient.Put(3, o);
-            restClient.Delete(5);
+            restClient.Delete(5);*/
             return;
             //var s = new AirHttpClient(new NewtonsoftJsonAirHttpContentConfiguration());
             //var s = new AirHttpNewtonsoftJsonClient();

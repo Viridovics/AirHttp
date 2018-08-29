@@ -13,6 +13,7 @@
     <Compile Include="AirHttpDefferedExtensionsTests.fs" />
     <Compile Include="DefaultHttpClientParametersTests.fs" />
     <Compile Include="AirHttpResponseTests.fs" />
+    <Compile Include="AirHttpUriBuilderTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -26,10 +27,12 @@
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+    <DotNetCliToolReference Include="dotnet-reportgenerator-cli" Version="4.0.0-rc4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AirHttp\AirHttp.csproj" />
+    <ProjectReference Include="..\AirHttp.UriFluentBuilder\AirHttp.UriFluentBuilder.csproj" />
   </ItemGroup>
 
 </Project>
