@@ -135,6 +135,18 @@ restClient.Put(id, object) // Put object
 restClient.Delete(id) // Delete object by id/key
 ```
 
+### Building uri in fluent style
+
+```
+using AirHttp.UriFluentBuilder.Extensions;
+
+var uriWithSegments = "localhost:52870".AddHttp().AddSegment("api").AddSegment("rest");
+//uriWithSegments is 'http://localhost:52870/api/rest'
+var uriWithQuery = "localhost:52870".AddHttps().AddWWW().AddQueryParams(new { id = 5 })
+                                                        .AddQueryParam("point", "42");
+//uriWithQuery is 'https://www.localhost:52870?id=5&point=42'
+```
+
 # License
 Copyright (c) Viridovics
 
