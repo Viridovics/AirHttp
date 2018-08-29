@@ -78,7 +78,7 @@ namespace AirHttp.Client.Rest
 
         private string CreateUrlWithKey(TKey key)
         {
-            return _endpointUrl.AddSegment(key.ToString());
+            return _endpointUrl.AddSegment(key);
         }
     }
 }
