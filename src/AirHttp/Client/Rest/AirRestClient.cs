@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AirHttp.Configuration;
 using AirHttp.Protocols;
 using AirHttp.Responses.Interfaces;
+using AirHttp.UriFluentBuilder.Extensions;
 
 namespace AirHttp.Client.Rest
 {
@@ -22,10 +23,6 @@ namespace AirHttp.Client.Rest
         internal AirRestClient(string endpointUrl, IAirContentProcessor contentProcessor, IHttpClientParameters parameters, IWebRequestProcessor webRequestProcessor)
         {
             _airHttpClient = new AirHttpClient(contentProcessor, parameters, webRequestProcessor);
-            if (!endpointUrl.EndsWith("/"))
-            {
-                endpointUrl += "/";
-            }
             this._endpointUrl = endpointUrl;
         }
 
@@ -81,7 +78,7 @@ namespace AirHttp.Client.Rest
 
         private string CreateUrlWithKey(TKey key)
         {
-            return _endpointUrl + key.ToString();
+            return _endpointUrl.AddSegment(key.ToString());
         }
     }
 }

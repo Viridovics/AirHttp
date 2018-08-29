@@ -4,10 +4,13 @@
     <TargetFrameworks>netstandard2.0;net45;net46</TargetFrameworks>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AirHttp.UriFluentBuilder\AirHttp.UriFluentBuilder.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.8
-    </Version>
+    <Version>0.0.9</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Authors>Viridovics</Authors>
     <Description>

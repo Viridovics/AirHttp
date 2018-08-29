@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web;
+using System.Net;
 
 namespace AirHttp.UriFluentBuilder
 {
@@ -149,7 +149,7 @@ namespace AirHttp.UriFluentBuilder
             if (_parameters.Any())
             {
                 AddPartToResult(result, "?");
-                var joinedParameters = string.Join("&", _parameters.Select(p => string.IsNullOrEmpty(p.Item2) ? p.Item1 : p.Item1 + "=" + HttpUtility.UrlEncode(p.Item2)));
+                var joinedParameters = string.Join("&", _parameters.Select(p => string.IsNullOrEmpty(p.Item2) ? p.Item1 : p.Item1 + "=" + WebUtility.UrlEncode(p.Item2)));
                 AddPartToResult(result, joinedParameters);
             }
             return result.ToString();
