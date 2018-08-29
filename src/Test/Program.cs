@@ -22,9 +22,9 @@ namespace Test
         {
             var uriWithSegments = "localhost:52870".AddHttp().AddSegment("api").AddSegment("rest");
             //uriWithSegments is 'http://localhost:52870/api/rest'
-            var uriWithQuery = "localhost:52870".AddHttps().AddWWW().AddQueryParams(new { id = 5 })
+            var uriWithQuery = "localhost".AddPort(8080).AddHttps().AddWWW().AddQueryParams(new { id = 5 })
                                                                     .AddQueryParam("point", "42");
-            //uriWithQuery is 'https://www.localhost:52870?id=5&point=42'
+            //uriWithQuery is 'https://www.localhost:8080?id=5&point=42'
             System.Console.WriteLine(uriWithQuery);
 
 

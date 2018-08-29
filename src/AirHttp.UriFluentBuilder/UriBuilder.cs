@@ -11,6 +11,7 @@ namespace AirHttp.UriFluentBuilder
         private string _protocol;
         private string _www;
         private string _main;
+        private ushort? _port;
 
         private List<string> _segments = new List<string>();
 
@@ -50,13 +51,31 @@ namespace AirHttp.UriFluentBuilder
             return this;
         }
 
-        public UriBuilder AddSegment(string segment)
+        public UriBuilder AddPort(ushort port)
         {
-            if (string.IsNullOrEmpty(segment))
+            _port = port;
+            return this;
+        }
+
+        public UriBuilder AddSegment(object segment)
+        {
+            if (segment == null)
             {
-                throw new ArgumentException("Parameter is null or empty", nameof(segment));
+                throw new ArgumentNullException(nameof(segment));
             }
-            _segments.Add(segment);
+            var serializedValue = segment.ToString();
+            if(string.IsNullOrWhiteSpace(serializedValue))
+            {
+                throw new ArgumentException("Is empty or white space", nameof(segment));
+            }
+            if(string.IsNullOrWhiteSpace(_main))
+            {
+                _main = serializedValue;
+            }
+            else
+            {
+                _segments.Add(serializedValue);
+            }
             return this;
         }
 
@@ -136,7 +155,11 @@ namespace AirHttp.UriFluentBuilder
             var result = new StringBuilder();
             AddPartToResult(result, _protocol);
             AddPartToResult(result, _www);
-            AddPartToResult(result, _main, _segments.Any());
+            AddPartToResult(result, _main, _segments.Any() || _port.HasValue);
+            if(_port.HasValue && !string.IsNullOrEmpty(_main))
+            {
+                result.Append(":" + _port.Value.ToString());
+            }
             if(_segments.Any())
             {
                 if(!string.IsNullOrEmpty(_main))

@@ -29,7 +29,8 @@ let ``Add http/https/www`` () =
 [<Fact>]
 let ``Add segments (main part with /)`` () =
     let builder = (new UriBuilder("domain.com/")).AddHttp().AddWWW()
-    (fun () -> builder.AddSegment(null) |> ignore) |> should throw typeof<ArgumentException>
+    (fun () -> builder.AddSegment(null) |> ignore) |> should throw typeof<ArgumentNullException>
+    (fun () -> builder.AddSegment("") |> ignore) |> should throw typeof<ArgumentException>
     builder.AddSegment("test").ToString() |> should equal "http://www.domain.com/test"
     builder.AddSegment("test2").ToString() |> should equal "http://www.domain.com/test/test2"
 
@@ -91,6 +92,7 @@ let ``Check extensions`` () =
     !> "domain.com/".AddQueryParams(dict["param", 40; "param2", 700]) |> should equal "domain.com/?param=40&param2=700"
     !> "domain.com/".AddQueryParams({ Id=5; Name = "John"}) |> should equal "domain.com/?Id=5&Name=John"
     !> "domain.com/".AddQueryParams("param", ([40; 700] |> List.toSeq)) |> should equal "domain.com/?param=40&param=700"
+    !> "domain.com/".AddPort(42 |> uint16) |> should equal "domain.com:42"
 
 
 [<Fact>]
@@ -98,3 +100,9 @@ let ``Add empty builder`` () =
     let builder = (new UriBuilder()).AddSegment("domain.com/").AddHttp().AddWWW()
     !> builder.AddQueryParam("param", "value") |> should equal "http://www.domain.com/?param=value"
     !!> builder |> should equal (new Uri("http://www.domain.com/?param=value"))
+
+[<Fact>]
+let ``Add port`` () =
+    let builder = (new UriBuilder()).AddSegment("domain.com/").AddPort(42 |> uint16);
+    !> builder.AddQueryParam("param", "value") |> should equal "domain.com:42?param=value"
+    !> builder.AddSegment(30) |> should equal "domain.com:42/30?param=value"

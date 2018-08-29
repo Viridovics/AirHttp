@@ -20,7 +20,12 @@ namespace AirHttp.UriFluentBuilder.Extensions
             return CreateUriBuilderWithSetup(uri, b => b.AddWWW());
         }
 
-        public static UriBuilder AddSegment(this string uri, string segment)
+        public static UriBuilder AddPort(this string uri, ushort port)
+        {
+            return CreateUriBuilderWithSetup(uri, b => b.AddPort(port));
+        }
+
+        public static UriBuilder AddSegment(this string uri, object segment)
         {
             return CreateUriBuilderWithSetup(uri, b => b.AddSegment(segment));
         }
