@@ -9,7 +9,7 @@ namespace AirHttp.Responses
         protected AirHttpResponse()
         { }
 
-        internal static AirHttpResponse CreateFaultedResponse(Exception e)
+        internal static IAirHttpResponse CreateFaultedResponse(Exception e)
         {
             return new AirHttpResponse
             {
@@ -18,7 +18,7 @@ namespace AirHttp.Responses
             };
         }
 
-        internal static AirHttpResponse CreateSuccessfulResponse(HttpWebResponse httpWebResponse)
+        internal static IAirHttpResponse CreateSuccessfulResponse(HttpWebResponse httpWebResponse)
         {
             return new AirHttpResponse
             {

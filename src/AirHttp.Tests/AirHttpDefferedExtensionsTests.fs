@@ -83,7 +83,7 @@ let ``Test success and fail extension composition (successful response)`` () =
 let ``Test success and fail extension composition (failed response)`` () =
     let callbackPathes = new CallbackPathes()
     let failResponse = AirHttpResponse.CreateFaultedResponse(new Exception("Test"))
-    let response = failResponse.Success(fun (r : AirHttpResponse) -> callbackPathes.SuccessPath <- true).Fail(fun r -> callbackPathes.FailPath <- true)                                                    
+    let response = failResponse.Success(fun (r : IAirHttpResponse) -> callbackPathes.SuccessPath <- true).Fail(fun r -> callbackPathes.FailPath <- true)                                                    
     callbackPathes.SuccessPath |> should equal false
     callbackPathes.FailPath |> should equal true
     response.FaultException.Message |> should equal "Test"

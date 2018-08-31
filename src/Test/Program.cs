@@ -20,7 +20,7 @@ namespace Test
     {
         static async Task Main(string[] args)
         {
-            var uriWithSegments = "localhost:52870".AddHttp().AddSegment("api").AddSegment("rest");
+            /*var uriWithSegments = "localhost:52870".AddHttp().AddSegment("api").AddSegment("rest");
             //uriWithSegments is 'http://localhost:52870/api/rest'
             var uriWithQuery = "localhost".AddPort(8080).AddHttps().AddWWW().AddQueryParams(new { id = 5 })
                                                                     .AddQueryParam("point", "42");
@@ -28,11 +28,19 @@ namespace Test
             System.Console.WriteLine(uriWithQuery);
 
 
-            var uri = new Uri(@"http://localhost:52870/api/Rest");
+            var uri = new Uri(@"http://localhost:52870/api/Rest");*/
             
-            /*var restClient = new AirRestClient<int, TestObj>(@"http://localhost:52870/api/Rest", new WeakJsonContentProcessor());
+            var restClient = new AirRestClient<int, TestObj>(@"http://localhost:52870/api/Rest", new WeakJsonContentProcessor(), 
+            new HttpClientParameters
+            {
+                RetryPolicy = new RetryPolicy
+                {
+                    RetryTimeout = TimeSpan.FromSeconds(2),
+                    AttemptsCount = 2
+                }
+            });
             var collection = restClient.Get().Value.ToList();
-            var o = restClient.Get(1).Value;
+            /*var o = restClient.Get(1).Value;
             restClient.Post(o);
             restClient.Put(3, o);
             restClient.Delete(5);*/

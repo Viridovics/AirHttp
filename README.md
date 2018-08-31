@@ -148,6 +148,21 @@ var uriWithQuery = "localhost".AddPort(8080).AddHttps().AddWWW().AddQueryParams(
 //uriWithQuery is 'https://www.localhost:8080?id=5&point=42'
 ```
 
+### For improvement reliability (network problems, server timeouts, etc) you can use RetryPolicy
+
+```
+var httpClientParameters = new HttpClientParameters
+                            {
+                                RetryPolicy = new RetryPolicy
+                                {
+                                    RetryTimeout = TimeSpan.FromSeconds(2),
+                                    AttemptsCount = 2
+                                }
+                            });
+var airHttpClient = new AirHttpClient(contentProcessor, httpClientParameters);
+```
+
+
 # License
 Copyright (c) Viridovics
 

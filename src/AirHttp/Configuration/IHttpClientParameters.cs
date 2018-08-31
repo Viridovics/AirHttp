@@ -11,5 +11,6 @@ namespace AirHttp.Configuration
         Encoding Encoding { get; }
         IWebProxy Proxy { get; }
         Action<HttpWebRequest> ConfigureRequest { get; }
+        IRetryPolicy RetryPolicy { get; }
     }
 }
