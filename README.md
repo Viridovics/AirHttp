@@ -11,6 +11,7 @@ AirHttp is lightweight http library for .NET
 * .NET Framework 4.5 and netstandard 2.0 assemblies
 * Rest client for WebApi 2 controller
 * Fluent URL builder
+* Retry policy for web requests
 
 ## Installation
 
