@@ -20,8 +20,16 @@ AirHttp is lightweight http library for .NET
 
 Nuget CLI command:
 
+[![NuGet](https://img.shields.io/badge/nuget-v0.1.1-blue.svg)](https://www.nuget.org/packages/AirHttp/)
 ```
 Install-Package AirHttp 
+```
+
+Only AirHttp.UriFluentBuilder
+
+[![NuGet](https://img.shields.io/badge/nuget-v1.0.1-blue.svg)](https://www.nuget.org/packages/AirHttp.UriFluentBuilder/)
+```
+Install-Package AirHttp.UriFluentBuilder
 ```
 
 ## Simple start
